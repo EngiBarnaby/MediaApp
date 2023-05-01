@@ -34,93 +34,93 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="60dp"
+        android:minHeight="@dimen/setting_min_size"
         android:layout_marginTop="40dp"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dark_theme"
-            android:textSize="16sp"
+            android:textSize="@dimen/setting_option_size"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/setting_start_margin"
             android:textColor="@color/black"
             />
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="@dimen/setting_end_margin"
             />
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="60dp">
+        android:minHeight="@dimen/setting_min_size">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/setting_start_margin"
             android:text="@string/share_app"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/setting_option_size" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="@dimen/setting_end_margin"
             app:drawableEndCompat="@drawable/share"
-            app:drawableTint="@color/black" />
+            app:drawableTint="@color/custom_grey" />
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="60dp"
+        android:minHeight="@dimen/setting_min_size"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/message_to_help"
-            android:textSize="16sp"
+            android:textSize="@dimen/setting_option_size"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/setting_start_margin"
             android:textColor="@color/black"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="@dimen/setting_end_margin"
             app:drawableEndCompat="@drawable/help"
-            app:drawableTint="@color/black"
+            app:drawableTint="@color/custom_grey"
             />
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="60dp"
+        android:minHeight="@dimen/setting_min_size"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Пользовательское соглашение"
-            android:textSize="16sp"
+            android:text="@string/user_agreement"
+            android:textSize="@dimen/setting_option_size"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/setting_start_margin"
             android:textColor="@color/black"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="20dp"
-            android:drawableTint="@color/black"
+            android:layout_marginEnd="@dimen/setting_end_margin"
+            android:drawableTint="@color/custom_grey"
             app:drawableEndCompat="@drawable/right_arrow"
             />
     </FrameLayout>

@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="main_title_sp">22sp</dimen>
+    <dimen name="info_msg_size">25sp</dimen>
+    <dimen name="main_padding">16dp</dimen>
+    <dimen name="main_radius">16dp</dimen>
+    <dimen name="icon_padding">10dp</dimen>
+    <dimen name="main_text_size">22sp</dimen>
+    <dimen name="main_margin_top">16dp</dimen>
+    <dimen name="setting_option_size">16sp</dimen>
+    <dimen name="setting_end_margin">20dp</dimen>
+    <dimen name="setting_start_margin">16dp</dimen>
+    <dimen name="setting_min_size">60dp</dimen>
 </resources>

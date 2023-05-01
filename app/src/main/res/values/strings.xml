@@ -8,4 +8,7 @@
     <string name="title_app">Playlist maker</string>
     <string name="search">Поиск</string>
     <string name="media_library">Медиатека</string>
+    <string name="user_agreement">Пользовательское соглашение</string>
+    <string name="search_page_msg">Сдесь будет поиск</string>
+    <string name="media_page_msg">Сдесь будет медиа</string>
 </resources>
