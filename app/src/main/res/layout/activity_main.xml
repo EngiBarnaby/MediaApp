@@ -2,7 +2,6 @@
 <LinearLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -21,7 +20,7 @@
     <Button
         android:id="@+id/searchBtn"
         android:layout_width="match_parent"
-        android:layout_height="0px"
+        android:layout_height="0dp"
         android:layout_marginTop="40dp"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
@@ -40,7 +39,7 @@
     <Button
         android:id="@+id/mediaBtn"
         android:layout_width="match_parent"
-        android:layout_height="0px"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/main_margin_top"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
@@ -59,7 +58,7 @@
     <Button
         android:id="@+id/settingBtn"
         android:layout_width="match_parent"
-        android:layout_height="0px"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/settings"
         android:textAllCaps="false"
