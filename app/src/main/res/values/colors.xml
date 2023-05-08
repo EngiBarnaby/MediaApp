@@ -10,4 +10,5 @@
     <color name="main_blue">#3B5AFF</color>
     <color name="custom_grey">#AEAFB4</color>
     <color name="main_background">#1C38FF</color>
+    <color name="main_background_night">#1A1B22</color>
 </resources>

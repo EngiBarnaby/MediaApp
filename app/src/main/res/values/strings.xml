@@ -11,4 +11,12 @@
     <string name="user_agreement">Пользовательское соглашение</string>
     <string name="search_page_msg">Сдесь будет поиск</string>
     <string name="media_page_msg">Сдесь будет медиа</string>
+    <string name="hint_search">Поиск</string>
+    <string name="share_url">https://practicum.yandex.ru/android-developer/</string>
+    <string name="practicum_offer_url">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="share_text">Поделиться приложением</string>
+    <string name="email_user">calnikov13@gmail.com</string>
+    <string name="email_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="email_body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="email_info_text">Выберите почтовый клиент</string>
 </resources>

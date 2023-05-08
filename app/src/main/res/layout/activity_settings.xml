@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white"
+    style="@style/BackgroundSetting"
     >
 
     <LinearLayout
@@ -20,6 +20,7 @@
             android:textSize="14sp"
             app:drawableLeftCompat="@drawable/left_arrow"
             android:padding="5dp"
+            style="@style/PageTitle"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +28,7 @@
             android:text="@string/settings"
             android:textSize="22sp"
             android:layout_marginStart="28dp"
-            android:textColor="@color/black"
+            style="@style/PageTitle"
             />
     </LinearLayout>
 
@@ -41,20 +42,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dark_theme"
-            android:textSize="@dimen/setting_option_size"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="@dimen/setting_start_margin"
-            android:textColor="@color/black"
+            style="@style/SettingText"
             />
         <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/setting_theme_switcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="@dimen/setting_end_margin"
+            android:theme="@style/SwitchCompatTheme"
             />
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/btn_share"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/setting_min_size">
@@ -63,21 +65,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="@dimen/setting_start_margin"
             android:text="@string/share_app"
-            android:textColor="@color/black"
-            android:textSize="@dimen/setting_option_size" />
+            style="@style/SettingText" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="@dimen/setting_end_margin"
             app:drawableEndCompat="@drawable/share"
-            app:drawableTint="@color/custom_grey" />
+            style="@style/SettingBtn"
+            />
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/btn_write_support"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/setting_min_size"
@@ -86,22 +87,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/message_to_help"
-            android:textSize="@dimen/setting_option_size"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="@dimen/setting_start_margin"
-            android:textColor="@color/black"
+            style="@style/SettingText"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="@dimen/setting_end_margin"
             app:drawableEndCompat="@drawable/help"
-            app:drawableTint="@color/custom_grey"
+            style="@style/SettingBtn"
             />
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/btn_web_page"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/setting_min_size"
@@ -110,18 +109,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_agreement"
-            android:textSize="@dimen/setting_option_size"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="@dimen/setting_start_margin"
-            android:textColor="@color/black"
+            style="@style/SettingText"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="@dimen/setting_end_margin"
-            android:drawableTint="@color/custom_grey"
             app:drawableEndCompat="@drawable/right_arrow"
+            style="@style/SettingBtn"
             />
     </FrameLayout>
 
