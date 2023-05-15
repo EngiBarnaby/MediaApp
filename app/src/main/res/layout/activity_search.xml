@@ -6,13 +6,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="14dp"
     >
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search_page_msg"
-        android:textSize="@dimen/info_msg_size"
-        />
+        android:layout_marginBottom="24dp"
+        >
+        <TextView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height='wrap_content'
+            android:textSize="14sp"
+            app:drawableLeftCompat="@drawable/left_arrow"
+            android:padding="5dp"
+            style="@style/PageTitle"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_search"
+            android:textSize="22sp"
+            android:layout_marginStart="28dp"
+            style="@style/PageTitle"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:radius="8dp"
+        android:background="@drawable/rounded_input_background"
+        >
+        <EditText
+            android:id="@+id/searchInput"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:hint="@string/hint_search"
+            android:drawableStart="@drawable/search_icon"
+            android:drawableTint="@color/custom_grey"
+            android:drawablePadding="4dp"
+            android:paddingStart="15dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:maxLines="1"
+            android:inputType="text"
+
+            />
+        <ImageView
+            android:id="@+id/clearIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/clear_icon"
+            android:layout_marginEnd="12dp"
+            android:visibility="gone"
+            />
+
+    </LinearLayout>
 </LinearLayout>
