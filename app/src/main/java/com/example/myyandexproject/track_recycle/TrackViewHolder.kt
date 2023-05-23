@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.myyandexproject.R
+import com.example.myyandexproject.repository.Track
 
 class TrackViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)  {
 
@@ -23,7 +24,7 @@ class TrackViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)  {
 
     fun bind(track : Track){
         trackTitleView.text = track.trackName
-        durationAndTitleBandView.text = "${track.artistName} · ${track.trackTime}"
+        durationAndTitleBandView.text = "${track.artistName} · ${track.trackTimeMillis}"
         Glide.with(itemView)
             .load(track.artworkUrl100)
             .placeholder(R.drawable.placeholder)
