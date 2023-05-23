@@ -45,4 +45,13 @@
         style="@style/MainPageBtn"
         />
 
+<!--    <Button-->
+<!--        android:id="@+id/testBtn"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:text="Test"-->
+<!--        app:icon="@drawable/settings_icon"-->
+<!--        android:layout_marginTop="@dimen/main_margin_top"-->
+<!--        style="@style/MainPageBtn"-->
+<!--        />-->
+
 </LinearLayout>

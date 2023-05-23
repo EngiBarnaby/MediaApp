@@ -39,4 +39,15 @@
     <style name="SwitchCompatTheme" >
         <item name="colorControlActivated">@color/main_blue</item>
     </style>
+    <style name="TrackMainTitle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="TrackSubTitle">
+        <item name="android:textColor">@color/custom_grey</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+    <style name="TrackIcon">
+        <item name="android:drawableTint">@color/black</item>
+    </style>
 </resources>

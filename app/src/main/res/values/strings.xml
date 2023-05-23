@@ -19,4 +19,5 @@
     <string name="email_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="email_body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="email_info_text">Выберите почтовый клиент</string>
+    <string name="test_text">Текстовый текст</string>
 </resources>
