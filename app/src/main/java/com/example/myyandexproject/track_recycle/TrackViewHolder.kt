@@ -9,6 +9,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.myyandexproject.R
 import com.example.myyandexproject.repository.Track
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TrackViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)  {
 
@@ -24,7 +26,11 @@ class TrackViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)  {
 
     fun bind(track : Track){
         trackTitleView.text = track.trackName
-        durationAndTitleBandView.text = "${track.artistName} · ${track.trackTimeMillis}"
+        var time = "0"
+        if(track.trackTimeMillis != null){
+            time = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis.toInt())
+        }
+        durationAndTitleBandView.text = "${track.artistName} · $time"
         Glide.with(itemView)
             .load(track.artworkUrl100)
             .placeholder(R.drawable.placeholder)
