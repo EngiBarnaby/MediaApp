@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myyandexproject.repository.Track
@@ -18,10 +19,14 @@ import com.example.myyandexproject.repository.TrackResponse
 import com.example.myyandexproject.retrofit_services.ItunesApi
 import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
 import com.example.myyandexproject.track_recycle.TrackAdapter
+import com.example.myyandexproject.track_recycle.TrackClick
 import com.google.android.material.button.MaterialButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+const val SHARED_PREFERENCES_KEY = "music_app_shared_preferences_key"
+const val MUSIC_HISTORY = "music_history"
 
 class SearchActivity : AppCompatActivity() {
 
@@ -29,10 +34,12 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var inputSearch : EditText
     private lateinit var btnBack : TextView
     private lateinit var trackRecycle : RecyclerView
+    private lateinit var historyTrackRecycle : RecyclerView
     private lateinit var clearIcon : ImageView
     private lateinit var notFoundTracksView : LinearLayout
     private lateinit var errorRequestView : LinearLayout
     private lateinit var refreshBtn : MaterialButton
+    private lateinit var tracksHistory : LinearLayout
 
     private val retrofitClient = RetrofitItunesClient.getClient()
     private val itunesService = retrofitClient.create(ItunesApi::class.java)
@@ -40,23 +47,56 @@ class SearchActivity : AppCompatActivity() {
     private val tracks = ArrayList<Track>()
     private val trackAdapter = TrackAdapter(tracks)
 
+    private var historyTracks = ArrayList<Track>()
+    private val historyTrackAdapter = TrackAdapter(historyTracks)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
         btnBack = findViewById(R.id.btnBack)
-        trackRecycle = findViewById(R.id.track_list)
         clearIcon = findViewById(R.id.clearIcon)
         notFoundTracksView = findViewById(R.id.not_found_container)
         errorRequestView = findViewById(R.id.error_request_container)
         refreshBtn = findViewById(R.id.refresh_btn)
+        tracksHistory = findViewById(R.id.songs_history)
+
+        trackRecycle = findViewById(R.id.track_list)
+        historyTrackRecycle = findViewById(R.id.history_tracks)
+
+        val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE)
+
+        val historyTracksFromPrefs = sharedPreferences.getString(MUSIC_HISTORY, null)
+
+        if(historyTracksFromPrefs != null){
+            val tracks = Track.createTracksListFromJson(historyTracksFromPrefs).toCollection(ArrayList())
+            historyTracks.addAll(tracks)
+        }
+
+        trackAdapter.setTrackClickListener(object : TrackClick {
+            override fun onClick(track: Track) {
+                if(!historyTracks.contains(track)){
+                    Toast.makeText(applicationContext, "${track.trackName} был добавлен в историю", Toast.LENGTH_SHORT).show()
+                    historyTracks.add(0, track)
+                }
+                if(historyTracks.size > 10){
+                    historyTracks.removeAll(historyTracks.subList(10, historyTracks.size))
+                }
+                sharedPreferences.edit()
+                    .putString(MUSIC_HISTORY, Track.createJsonFromTracksList(historyTracks))
+                    .apply()
+            }
+        })
+
+        historyTrackRecycle.layoutManager = LinearLayoutManager(this)
+        historyTrackRecycle.adapter = historyTrackAdapter
 
         trackRecycle.layoutManager = LinearLayoutManager(this)
         trackRecycle.adapter = trackAdapter
 
-
         inputSearch = findViewById(R.id.searchInput)
+
 
         if (savedInstanceState != null) {
             val savedText = savedInstanceState.getString(EDIT_TEXT_VAL,"")
@@ -77,12 +117,17 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
         }
 
+        inputSearch.setOnFocusChangeListener {view, isFocus ->
+            tracksHistory.visibility = if (isFocus && inputSearch.text.isEmpty()) View.VISIBLE else View.GONE
+        }
+
         val searchTextInputWatcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 // Empty
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                tracksHistory.visibility = if (inputSearch.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
                 if (s.isNullOrEmpty()) {
                     inputSearch.hint = getString(R.string.search)
                     searchText = ""
