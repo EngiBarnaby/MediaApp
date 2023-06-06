@@ -12,6 +12,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isEmpty
+import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myyandexproject.repository.Track
@@ -40,6 +42,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var errorRequestView : LinearLayout
     private lateinit var refreshBtn : MaterialButton
     private lateinit var tracksHistory : LinearLayout
+    private lateinit var clearHistoryBtn : MaterialButton
+    private lateinit var emptyHistoryTitle : LinearLayout
 
     private val retrofitClient = RetrofitItunesClient.getClient()
     private val itunesService = retrofitClient.create(ItunesApi::class.java)
@@ -61,6 +65,8 @@ class SearchActivity : AppCompatActivity() {
         errorRequestView = findViewById(R.id.error_request_container)
         refreshBtn = findViewById(R.id.refresh_btn)
         tracksHistory = findViewById(R.id.songs_history)
+        clearHistoryBtn = findViewById(R.id.clear_history_btn)
+        emptyHistoryTitle = findViewById(R.id.empty_history_title)
 
         trackRecycle = findViewById(R.id.track_list)
         historyTrackRecycle = findViewById(R.id.history_tracks)
@@ -77,11 +83,12 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter.setTrackClickListener(object : TrackClick {
             override fun onClick(track: Track) {
                 if(!historyTracks.contains(track)){
-                    Toast.makeText(applicationContext, "${track.trackName} был добавлен в историю", Toast.LENGTH_SHORT).show()
-                    historyTracks.add(0, track)
+                    historyTracks.remove(track)
                 }
+                historyTracks.add(0, track)
+                Toast.makeText(applicationContext, "${track.trackName} был добавлен в историю", Toast.LENGTH_SHORT).show()
                 if(historyTracks.size > 10){
-                    historyTracks.removeAll(historyTracks.subList(10, historyTracks.size))
+                    historyTracks.removeLast()
                 }
                 sharedPreferences.edit()
                     .putString(MUSIC_HISTORY, Track.createJsonFromTracksList(historyTracks))
@@ -108,6 +115,16 @@ class SearchActivity : AppCompatActivity() {
             super.onBackPressed()
         }
 
+        clearHistoryBtn.setOnClickListener {
+            historyTracks.clear()
+            historyTrackAdapter.notifyDataSetChanged()
+            sharedPreferences.edit()
+                .putString(MUSIC_HISTORY, "[]")
+                .apply()
+            tracksHistory.visibility = View.GONE
+            emptyHistoryTitle.visibility = View.VISIBLE
+        }
+
         clearIcon.setOnClickListener {
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (currentFocus != null) {
@@ -118,7 +135,14 @@ class SearchActivity : AppCompatActivity() {
         }
 
         inputSearch.setOnFocusChangeListener {view, isFocus ->
-            tracksHistory.visibility = if (isFocus && inputSearch.text.isEmpty()) View.VISIBLE else View.GONE
+            if(historyTracks.isNotEmpty() && isFocus){
+                tracksHistory.visibility = if (inputSearch.text.isEmpty()) View.VISIBLE else View.GONE
+                emptyHistoryTitle.visibility = View.GONE
+            }
+            else{
+                tracksHistory.visibility = View.GONE
+                emptyHistoryTitle.visibility = if (inputSearch.text.isEmpty()) View.VISIBLE else View.GONE
+            }
         }
 
         val searchTextInputWatcher = object : TextWatcher {
@@ -127,7 +151,20 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                tracksHistory.visibility = if (inputSearch.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                if (inputSearch.hasFocus() && s?.isEmpty() == true){
+                    if(historyTracks.isNotEmpty()){
+                        tracksHistory.visibility = View.VISIBLE
+                        emptyHistoryTitle.visibility = View.GONE
+                    }
+                    else{
+                        tracksHistory.visibility = View.GONE
+                        emptyHistoryTitle.visibility = View.VISIBLE
+                    }
+                }
+                else{
+                    tracksHistory.visibility = View.GONE
+                    emptyHistoryTitle.visibility = View.GONE
+                }
                 if (s.isNullOrEmpty()) {
                     inputSearch.hint = getString(R.string.search)
                     searchText = ""

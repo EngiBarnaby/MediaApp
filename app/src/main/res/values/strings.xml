@@ -26,4 +26,5 @@
     <string name="refresh_btn">Обновить</string>
     <string name="looking_for">Вы искали</string>
     <string name="clear_history">Очистить историю</string>
+    <string name="history_empty_title">История ваших треков пока пустая</string>
 </resources>
