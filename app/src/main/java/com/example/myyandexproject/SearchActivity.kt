@@ -82,7 +82,7 @@ class SearchActivity : AppCompatActivity() {
 
         trackAdapter.setTrackClickListener(object : TrackClick {
             override fun onClick(track: Track) {
-                if(!historyTracks.contains(track)){
+                if(historyTracks.contains(track)){
                     historyTracks.remove(track)
                 }
                 historyTracks.add(0, track)
@@ -93,6 +93,7 @@ class SearchActivity : AppCompatActivity() {
                 sharedPreferences.edit()
                     .putString(MUSIC_HISTORY, Track.createJsonFromTracksList(historyTracks))
                     .apply()
+                historyTrackAdapter.notifyDataSetChanged()
             }
         })
 
