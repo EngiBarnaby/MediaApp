@@ -7,6 +7,13 @@ import com.example.myyandexproject.R
 import com.example.myyandexproject.repository.Track
 
 class TrackAdapter(private val tracks : ArrayList<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
+
+    private var clickListener : TrackClick? = null
+
+    fun setTrackClickListener(listener: TrackClick) {
+        clickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)
         return TrackViewHolder(view)
@@ -18,7 +25,9 @@ class TrackAdapter(private val tracks : ArrayList<Track>) : RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
+
+        holder.itemView.setOnClickListener {
+            clickListener?.onClick(tracks[position])
+        }
     }
-
-
 }

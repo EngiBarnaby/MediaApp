@@ -24,4 +24,13 @@
     <string name="connection_problem">Проблемы со связью</string>
     <string name="check_connection">Зашрузка не удалась. Проверти подключение к интернету</string>
     <string name="refresh_btn">Обновить</string>
+    <string name="looking_for">Вы искали</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="history_empty_title">История ваших треков пока пустая</string>
+    <string name="failure_get_song">При загрузке трэка произошла ошибка</string>
+    <string name="duration_title">Длительность</string>
+    <string name="album_title">Альбом</string>
+    <string name="release_year">Год</string>
+    <string name="genre_title">Жанр</string>
+    <string name="county_title">Страна</string>
 </resources>

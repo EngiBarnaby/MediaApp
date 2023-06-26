@@ -64,4 +64,41 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:backgroundTint">@color/black</item>
     </style>
+    <style name="HistoryTitle">
+        <item name="android:textSize">19sp</item>
+        <item name="android:fontWeight">500</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="buttomShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="MediaProperty">
+        <item name="android:layout_height">32dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/custom_grey</item>
+    </style>
+
+    <style name="MediaPropertyValue">
+        <item name="android:layout_height">32dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="MediaTitle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">26sp</item>
+    </style>
+    <style name="MediaBandName">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="MediaPlayBtn">
+        <item name="backgroundTint">@color/black</item>
+    </style>
+
+    <style name="MediaImageTrack">
+        <item name="android:background">@color/white</item>
+    </style>
 </resources>
