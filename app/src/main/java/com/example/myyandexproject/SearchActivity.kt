@@ -1,6 +1,7 @@
 package com.example.myyandexproject
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -29,6 +30,7 @@ import retrofit2.Response
 
 const val SHARED_PREFERENCES_KEY = "music_app_shared_preferences_key"
 const val MUSIC_HISTORY = "music_history"
+const val CHOSEN_TRACK = "chosen_track"
 
 class SearchActivity : AppCompatActivity() {
 
@@ -80,13 +82,18 @@ class SearchActivity : AppCompatActivity() {
             historyTracks.addAll(tracks)
         }
 
+        historyTrackAdapter.setTrackClickListener( object : TrackClick {
+            override fun onClick(track: Track) {
+                startMediaActivity(track.trackId)
+            }
+        })
+
         trackAdapter.setTrackClickListener(object : TrackClick {
             override fun onClick(track: Track) {
                 if(historyTracks.contains(track)){
                     historyTracks.remove(track)
                 }
                 historyTracks.add(0, track)
-                Toast.makeText(applicationContext, "${track.trackName} был добавлен в историю", Toast.LENGTH_SHORT).show()
                 if(historyTracks.size > 10){
                     historyTracks.removeLast()
                 }
@@ -94,6 +101,7 @@ class SearchActivity : AppCompatActivity() {
                     .putString(MUSIC_HISTORY, Track.createJsonFromTracksList(historyTracks))
                     .apply()
                 historyTrackAdapter.notifyDataSetChanged()
+                startMediaActivity(track.trackId)
             }
         })
 
@@ -188,6 +196,12 @@ class SearchActivity : AppCompatActivity() {
             makeRequest(searchText)
         }
 
+    }
+
+    private fun startMediaActivity(track_id : Int){
+        val audioPlayerIntent = Intent(this, AudioPlayer::class.java)
+        audioPlayerIntent.putExtra("track_id_key", track_id)
+        startActivity(audioPlayerIntent)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
