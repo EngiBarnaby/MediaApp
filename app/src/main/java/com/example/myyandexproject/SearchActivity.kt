@@ -2,8 +2,11 @@ package com.example.myyandexproject
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -24,6 +27,7 @@ import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
 import com.example.myyandexproject.track_recycle.TrackAdapter
 import com.example.myyandexproject.track_recycle.TrackClick
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,6 +37,17 @@ const val MUSIC_HISTORY = "music_history"
 const val CHOSEN_TRACK = "chosen_track"
 
 class SearchActivity : AppCompatActivity() {
+
+    companion object {
+        private const val EDIT_TEXT_VAL = "EDIT_TEXT_VAL"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val INPUT_DEBOUNCE_DELAY = 1500L
+
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+    }
 
     private var searchText : String = ""
     private lateinit var inputSearch : EditText
@@ -46,6 +61,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var tracksHistory : LinearLayout
     private lateinit var clearHistoryBtn : MaterialButton
     private lateinit var emptyHistoryTitle : LinearLayout
+    private lateinit var progressBar : CircularProgressIndicator
 
     private val retrofitClient = RetrofitItunesClient.getClient()
     private val itunesService = retrofitClient.create(ItunesApi::class.java)
@@ -56,6 +72,9 @@ class SearchActivity : AppCompatActivity() {
     private var historyTracks = ArrayList<Track>()
     private val historyTrackAdapter = TrackAdapter(historyTracks)
 
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { makeRequest() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,9 +88,11 @@ class SearchActivity : AppCompatActivity() {
         tracksHistory = findViewById(R.id.songs_history)
         clearHistoryBtn = findViewById(R.id.clear_history_btn)
         emptyHistoryTitle = findViewById(R.id.empty_history_title)
+        progressBar = findViewById(R.id.progressBar)
 
         trackRecycle = findViewById(R.id.track_list)
         historyTrackRecycle = findViewById(R.id.history_tracks)
+
 
         val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE)
 
@@ -180,7 +201,7 @@ class SearchActivity : AppCompatActivity() {
                 } else {
                     inputSearch.hint = ""
                     searchText = s.toString()
-                    makeRequest(searchText)
+                    searchDebounce()
                 }
                 clearIcon.visibility = clearIconIsVisible(s)
             }
@@ -193,15 +214,19 @@ class SearchActivity : AppCompatActivity() {
         inputSearch.addTextChangedListener(searchTextInputWatcher)
 
         refreshBtn.setOnClickListener {
-            makeRequest(searchText)
+            makeRequest()
         }
 
     }
 
+
+
     private fun startMediaActivity(track_id : Int){
-        val audioPlayerIntent = Intent(this, AudioPlayer::class.java)
-        audioPlayerIntent.putExtra("track_id_key", track_id)
-        startActivity(audioPlayerIntent)
+        if (clickDebounce()) {
+            val audioPlayerIntent = Intent(this, AudioPlayer::class.java)
+            audioPlayerIntent.putExtra("track_id_key", track_id)
+            startActivity(audioPlayerIntent)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -209,13 +234,17 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(EDIT_TEXT_VAL, searchText)
     }
 
-    private fun makeRequest(s : String){
+    private fun makeRequest(){
+        val s : String = inputSearch.text.toString()
+        progressBar.visibility = View.VISIBLE
+        trackRecycle.visibility = View.GONE
         itunesService.searchSong(s).enqueue(object  : Callback<TrackResponse>{
             override fun onResponse(
                 call: Call<TrackResponse>,
                 response: Response<TrackResponse>
             ) {
                 if(response.code() == 200){
+                    progressBar.visibility = View.GONE
                     tracks.clear()
                     if (response.body()?.results?.isNotEmpty() == true) {
                         tracks.addAll(response.body()?.results!!)
@@ -241,6 +270,20 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, INPUT_DEBOUNCE_DELAY)
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
     private fun clearIconIsVisible(s : CharSequence?) : Int {
         return if(s.isNullOrEmpty()){
             View.GONE
@@ -249,10 +292,5 @@ class SearchActivity : AppCompatActivity() {
             View.VISIBLE
         }
     }
-
-    companion object {
-        const val EDIT_TEXT_VAL = "EDIT_TEXT_VAL"
-    }
-
 
 }

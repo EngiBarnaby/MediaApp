@@ -33,4 +33,5 @@
     <string name="release_year">Год</string>
     <string name="genre_title">Жанр</string>
     <string name="county_title">Страна</string>
+    <string name="initial_time">00:00</string>
 </resources>
