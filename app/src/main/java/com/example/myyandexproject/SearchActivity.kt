@@ -43,6 +43,8 @@ class SearchActivity : AppCompatActivity() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val INPUT_DEBOUNCE_DELAY = 1500L
 
+        private const val TRACK_ID_KEY = "track_id_key"
+
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
@@ -224,7 +226,7 @@ class SearchActivity : AppCompatActivity() {
     private fun startMediaActivity(track_id : Int){
         if (clickDebounce()) {
             val audioPlayerIntent = Intent(this, AudioPlayer::class.java)
-            audioPlayerIntent.putExtra("track_id_key", track_id)
+            audioPlayerIntent.putExtra(TRACK_ID_KEY, track_id)
             startActivity(audioPlayerIntent)
         }
     }

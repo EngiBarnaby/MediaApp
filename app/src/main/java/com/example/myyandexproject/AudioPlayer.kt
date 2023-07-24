@@ -16,6 +16,7 @@ import com.example.myyandexproject.repository.Track
 import com.example.myyandexproject.repository.TrackResponse
 import com.example.myyandexproject.retrofit_services.ItunesApi
 import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
+import com.example.myyandexproject.utils.SUCCESS_RESPONSE
 import com.example.myyandexproject.utils.convertTime
 import com.google.android.material.button.MaterialButton
 import retrofit2.Call
@@ -33,7 +34,8 @@ class AudioPlayer : AppCompatActivity() {
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
 
-        private const val TIMER_CHANGE_DELAY = 1000L
+        private const val TRACK_ID_KEY = "track_id_key"
+        private const val TIMER_CHANGE_DELAY_MILLIS = 1000L
     }
 
     private val retrofitClient = RetrofitItunesClient.getClient()
@@ -79,7 +81,7 @@ class AudioPlayer : AppCompatActivity() {
 
         val intent = intent
         val bundle = intent.extras
-        val trackId = bundle?.getInt("track_id_key")
+        val trackId = bundle?.getInt(TRACK_ID_KEY)
 
         if (trackId != null) {
             getSong(trackId)
@@ -113,9 +115,9 @@ class AudioPlayer : AppCompatActivity() {
                 if(playerState == STATE_PLAYING){
                     changeTime()
                 }
-                handler.postDelayed(this, TIMER_CHANGE_DELAY)
+                handler.postDelayed(this, TIMER_CHANGE_DELAY_MILLIS)
             }
-        }, TIMER_CHANGE_DELAY)
+        }, TIMER_CHANGE_DELAY_MILLIS)
     }
 
     private fun changeTime(){
@@ -125,7 +127,7 @@ class AudioPlayer : AppCompatActivity() {
     private fun getSong(id : Int){
         itunesService.getSongById(id).enqueue( object : Callback<TrackResponse>{
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if(response.code() == 200){
+                if(response.code() == SUCCESS_RESPONSE){
                     if (response.body()?.results?.isNotEmpty() == true) {
                         track = response.body()?.results!![0]
                         setValue(track!!)
