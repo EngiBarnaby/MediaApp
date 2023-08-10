@@ -12,15 +12,13 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.isEmpty
-import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myyandexproject.repository.Track
-import com.example.myyandexproject.repository.TrackResponse
-import com.example.myyandexproject.retrofit_services.ItunesApi
-import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
+import com.example.myyandexproject.ui.player.AudioPlayer
+import com.example.myyandexproject.domain.models.Track
+import com.example.myyandexproject.data.dto.TrackResponse
+import com.example.myyandexproject.data.network.ItunesApi
+import com.example.myyandexproject.data.network.RetrofitItunesClient
 import com.example.myyandexproject.track_recycle.TrackAdapter
 import com.example.myyandexproject.track_recycle.TrackClick
 import com.google.android.material.button.MaterialButton
@@ -210,7 +208,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun makeRequest(s : String){
-        itunesService.searchSong(s).enqueue(object  : Callback<TrackResponse>{
+        itunesService.searchSongs(s).enqueue(object  : Callback<TrackResponse>{
             override fun onResponse(
                 call: Call<TrackResponse>,
                 response: Response<TrackResponse>

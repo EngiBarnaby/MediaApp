@@ -1,29 +1,25 @@
-package com.example.myyandexproject
+package com.example.myyandexproject.presentation.audio_player
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.os.Bundle
-import android.view.View
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.myyandexproject.repository.Track
-import com.example.myyandexproject.repository.TrackResponse
-import com.example.myyandexproject.retrofit_services.ItunesApi
-import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.myyandexproject.R
+import com.example.myyandexproject.domain.Creator
+import com.example.myyandexproject.domain.api.TrackInteractor
+import com.example.myyandexproject.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class AudioPlayer : AppCompatActivity() {
+class AudioPresenter(private val view : Activity) {
 
-    private val retrofitClient = RetrofitItunesClient.getClient()
-    private val itunesService = retrofitClient.create(ItunesApi::class.java)
     private lateinit var trackTitle : TextView
     private lateinit var bandTitle : TextView
     private lateinit var currentDuration : TextView
@@ -36,56 +32,48 @@ class AudioPlayer : AppCompatActivity() {
     private lateinit var btnBack : TextView
 
     private var track : Track? = null
+    private val handler = Handler(Looper.getMainLooper())
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_audio_player)
+    companion object {
+        private val interactor = Creator.getTracksInteractor()
+    }
 
-        trackTitle = findViewById<TextView>(R.id.trackTitle)
-        bandTitle = findViewById<TextView>(R.id.bandTitle)
-        currentDuration = findViewById<TextView>(R.id.currentDuration)
-        durationValue = findViewById<TextView>(R.id.durationValue)
-        albumValue = findViewById<TextView>(R.id.albumValue)
-        yearValue = findViewById<TextView>(R.id.yearValue)
-        genreValue = findViewById<TextView>(R.id.genreValue)
-        trackImage = findViewById<ImageView>(R.id.imageView)
-        country = findViewById<TextView>(R.id.country)
-        btnBack = findViewById(R.id.btnBack)
 
-        btnBack.setOnClickListener {
-            super.onBackPressed()
-        }
+    fun onCreate(){
+
+        trackTitle = view.findViewById<TextView>(R.id.trackTitle)
+        bandTitle =  view.findViewById<TextView>(R.id.bandTitle)
+        currentDuration =  view.findViewById<TextView>(R.id.currentDuration)
+        durationValue =  view.findViewById<TextView>(R.id.durationValue)
+        albumValue =  view.findViewById<TextView>(R.id.albumValue)
+        yearValue =  view.findViewById<TextView>(R.id.yearValue)
+        genreValue =  view.findViewById<TextView>(R.id.genreValue)
+        trackImage =  view.findViewById<ImageView>(R.id.imageView)
+        country =  view.findViewById<TextView>(R.id.country)
+        btnBack =  view.findViewById(R.id.btnBack)
 
         val intent = intent
         val bundle = intent.extras
         val track_id = bundle?.getInt("track_id_key")
 
         if (track_id != null) {
-            getSong(track_id)
-        }
-        else{
-            Toast.makeText(applicationContext, "id трэка не было передано", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    fun getSong(id : Int){
-        itunesService.getSongById(id).enqueue( object : Callback<TrackResponse>{
-            override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if(response.code() == 200){
-                    if (response.body()?.results?.isNotEmpty() == true) {
-                        track = response.body()?.results!![0]
+            interactor.getSong(track_id, object : TrackInteractor.TracksConsumer {
+                override fun consume(foundTracks: List<Track>) {
+                    handler.post{
+                        track = foundTracks.first()
                         setValue(track!!)
                     }
-                    else {
-                        Toast.makeText(applicationContext, "Трэк с этим id не был найден", Toast.LENGTH_SHORT).show()
-                    }
                 }
-            }
+            })
+        }
+        else {
+            Toast.makeText(applicationContext, "id трэка не было передано", Toast.LENGTH_SHORT).show()
+        }
 
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                Toast.makeText(applicationContext, resources.getString(R.string.failure_get_song), Toast.LENGTH_SHORT).show()
-            }
-        })
+    }
+
+    fun onDestroy(){
+
     }
 
     fun getBigImageUrl(url : String?) : String? {
