@@ -11,16 +11,16 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
         if(response.resultResponse == 200){
             return (response as TrackResponse).results.map {
                 Track(
-                it.trackId,
-                it.trackName,
-                it.artistName,
-                it.trackTimeMillis,
-                it.artworkUrl100,
-                it.collectionName,
-                it.releaseDate,
-                it.primaryGenreName,
-                it.country,
-                it.previewUrl
+                    it.trackId,
+                    it.trackName,
+                    it.artistName,
+                    it.trackTimeMillis,
+                    it.artworkUrl100,
+                    it.collectionName,
+                    it.releaseDate,
+                    it.primaryGenreName,
+                    it.country,
+                    it.previewUrl
                 )
             }
         }

@@ -12,10 +12,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.myyandexproject.R
+import com.example.myyandexproject.data.network.ItunesApi
 import com.example.myyandexproject.domain.models.Track
-import com.example.myyandexproject.repository.Track
 import com.example.myyandexproject.repository.TrackResponse
-import com.example.myyandexproject.retrofit_services.ItunesApi
 import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
 import com.example.myyandexproject.utils.SUCCESS_RESPONSE
 import com.example.myyandexproject.utils.convertTime
@@ -126,24 +125,6 @@ class AudioPlayer : AppCompatActivity() {
     }
 
     private fun getSong(id : Int){
-        itunesService.getSongById(id).enqueue( object : Callback<TrackResponse>{
-            override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if(response.code() == SUCCESS_RESPONSE){
-                    if (response.body()?.results?.isNotEmpty() == true) {
-                        track = response.body()?.results!![0]
-                        setValue(track!!)
-                        preparePlayer()
-                    }
-                    else {
-                        Toast.makeText(applicationContext, "Трэк с этим id не был найден", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                Toast.makeText(applicationContext, resources.getString(R.string.failure_get_song), Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun getBigImageUrl(url : String?) : String? {

@@ -20,11 +20,11 @@ import com.example.myyandexproject.ui.player.AudioPlayer
 import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.data.dto.TrackResponse
 import com.example.myyandexproject.data.network.ItunesApi
-import com.example.myyandexproject.data.network.RetrofitItunesClient
 import com.example.myyandexproject.track_recycle.TrackAdapter
 import com.example.myyandexproject.track_recycle.TrackClick
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -237,7 +237,7 @@ class SearchActivity : AppCompatActivity() {
         val s : String = inputSearch.text.toString()
         progressBar.visibility = View.VISIBLE
         trackRecycle.visibility = View.GONE
-        itunesService.searchSong(s).enqueue(object  : Callback<TrackResponse>{
+        itunesService.searchSongs(s).enqueue(object  : Callback<TrackResponse>{
             override fun onResponse(
                 call: Call<TrackResponse>,
                 response: Response<TrackResponse>
