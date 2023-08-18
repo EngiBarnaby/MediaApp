@@ -1,4 +1,4 @@
-package com.example.myyandexproject.repository
+package com.example.myyandexproject.domain.models
 
 import com.google.gson.Gson
 
