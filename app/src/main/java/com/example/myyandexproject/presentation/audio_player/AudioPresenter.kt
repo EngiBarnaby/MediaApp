@@ -1,8 +1,8 @@
 package com.example.myyandexproject.presentation.audio_player
 
 import android.app.Activity
+import android.content.Context
 import android.media.MediaPlayer
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.ImageView
@@ -21,7 +21,7 @@ import java.util.Calendar
 import java.util.Locale
 import com.example.myyandexproject.utils.convertTime
 
-class AudioPresenter(private val view : Activity) {
+class AudioPresenter(private val view : Activity, private val context : Context) {
 
     private lateinit var trackTitle : TextView
     private lateinit var bandTitle : TextView
@@ -54,17 +54,17 @@ class AudioPresenter(private val view : Activity) {
         private val interactor = Creator.getTracksInteractor()
     }
 
-    fun onCreate(savedInstanceState: Bundle?) {
+    fun onCreate() {
 
         trackTitle = view.findViewById(R.id.trackTitle)
         bandTitle = view.findViewById(R.id.bandTitle)
-        currentDuration = view.findViewById<TextView>(R.id.currentDuration)
-        durationValue = view.findViewById<TextView>(R.id.durationValue)
-        albumValue = view.findViewById<TextView>(R.id.albumValue)
-        yearValue = view.findViewById<TextView>(R.id.yearValue)
-        genreValue = view.findViewById<TextView>(R.id.genreValue)
-        trackImage = view.findViewById<ImageView>(R.id.imageView)
-        country = view.findViewById<TextView>(R.id.country)
+        currentDuration = view.findViewById(R.id.currentDuration)
+        durationValue = view.findViewById(R.id.durationValue)
+        albumValue = view.findViewById(R.id.albumValue)
+        yearValue = view.findViewById(R.id.yearValue)
+        genreValue = view.findViewById(R.id.genreValue)
+        trackImage = view.findViewById(R.id.imageView)
+        country = view.findViewById(R.id.country)
         btnBack = view.findViewById(R.id.btnBack)
         playBtn = view.findViewById(R.id.fab2)
 
@@ -82,12 +82,13 @@ class AudioPresenter(private val view : Activity) {
                     handler.post{
                         track = foundTracks.first()
                         setValue(track!!)
+                        preparePlayer()
                     }
                 }
             })
         }
         else{
-            Toast.makeText(view.applicationContext, "id тркека не было передано", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "id тркека не было передано", Toast.LENGTH_SHORT).show()
         }
 
         playBtn.setOnClickListener {
