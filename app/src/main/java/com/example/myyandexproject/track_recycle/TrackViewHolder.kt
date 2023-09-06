@@ -31,7 +31,7 @@ class TrackViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)  {
         durationAndTitleBandView.text = "${track.artistName} · $time"
         Glide.with(itemView)
             .load(track.artworkUrl100)
-            .placeholder(R.drawable.placeholder) // Установите радиус закругления, например, 16dp
+            .placeholder(R.drawable.track_image_placeholder)
             .override(45, 45)
             .centerCrop()
             .into(trackImageView)
