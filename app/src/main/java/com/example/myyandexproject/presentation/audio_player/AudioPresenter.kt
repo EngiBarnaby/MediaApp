@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -86,9 +85,6 @@ class AudioPresenter(private val view : Activity, private val context : Context)
                     }
                 }
             })
-        }
-        else{
-            Toast.makeText(context, "id тркека не было передано", Toast.LENGTH_SHORT).show()
         }
 
         playBtn.setOnClickListener {

@@ -91,6 +91,10 @@
         <item name="backgroundTint">@color/white</item>
     </style>
 
+    <style name="roundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">5dp</item>
+    </style>
     <style name="MediaImageTrack">
 <!--        <item name="android:background">@color/main_background_night</item>-->
     </style>

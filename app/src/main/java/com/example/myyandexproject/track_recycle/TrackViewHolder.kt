@@ -5,8 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.example.myyandexproject.R
 import com.example.myyandexproject.domain.models.Track
 import java.text.SimpleDateFormat
@@ -33,8 +31,9 @@ class TrackViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView)  {
         durationAndTitleBandView.text = "${track.artistName} · $time"
         Glide.with(itemView)
             .load(track.artworkUrl100)
-            .placeholder(R.drawable.placeholder)
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(15)))
+            .placeholder(R.drawable.placeholder) // Установите радиус закругления, например, 16dp
+            .override(45, 45)
+            .centerCrop()
             .into(trackImageView)
     }
 

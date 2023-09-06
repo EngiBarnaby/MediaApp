@@ -234,7 +234,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun makeRequest(){
-        val s : String = inputSearch.text.toString()
+        val s = inputSearch.text.toString()
         progressBar.visibility = View.VISIBLE
         trackRecycle.visibility = View.GONE
         itunesService.searchSongs(s).enqueue(object  : Callback<TrackResponse>{
