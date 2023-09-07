@@ -141,7 +141,8 @@ class SearchActivity : AppCompatActivity() {
 
 
         btnBack.setOnClickListener {
-            super.onBackPressed()
+            val mainIntent = Intent(this, MainActivity::class.java)
+            startActivity(mainIntent)
         }
 
         clearHistoryBtn.setOnClickListener {

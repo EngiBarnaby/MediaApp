@@ -14,13 +14,14 @@ import com.example.myyandexproject.R
 import com.example.myyandexproject.domain.Creator
 import com.example.myyandexproject.domain.api.TrackInteractor
 import com.example.myyandexproject.domain.models.Track
+import com.example.myyandexproject.ui.player.AudioPlayer
 import com.google.android.material.button.MaterialButton
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import com.example.myyandexproject.utils.convertTime
 
-class AudioPresenter(private val view : Activity, private val context : Context) {
+class AudioPresenter(private val view : AudioPlayer, private val context : Context) {
 
     private lateinit var trackTitle : TextView
     private lateinit var bandTitle : TextView
@@ -79,9 +80,14 @@ class AudioPresenter(private val view : Activity, private val context : Context)
             interactor.getSong(trackId, object : TrackInteractor.TracksConsumer {
                 override fun consume(foundTracks: List<Track>) {
                     handler.post{
-                        track = foundTracks.first()
-                        setValue(track!!)
-                        preparePlayer()
+                        if(foundTracks.isNotEmpty()){
+                            track = foundTracks.first()
+                            setValue(track!!)
+                            preparePlayer()
+                        }
+                        else{
+                            view.callErrorScreen()
+                        }
                     }
                 }
             })

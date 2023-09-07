@@ -34,4 +34,6 @@
     <string name="genre_title">Жанр</string>
     <string name="county_title">Страна</string>
     <string name="initial_time">00:00</string>
+    <string name="error_extraction_track">Не удалось получить нужный трек. Проверьте соединение с интернетом</string>
+    <string name="return_to_search">Вернутся к поиску</string>
 </resources>

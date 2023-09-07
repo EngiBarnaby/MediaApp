@@ -1,13 +1,15 @@
 package com.example.myyandexproject.ui.player
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import com.example.myyandexproject.R
 import com.example.myyandexproject.domain.Creator
 import com.example.myyandexproject.presentation.audio_player.AudioPresenter
+import com.example.myyandexproject.presentation.audio_player.AudioView
 
-class AudioPlayer : AppCompatActivity() {
+class AudioPlayer : AppCompatActivity(), AudioView {
 
     private lateinit var btnBack : TextView
     private lateinit var audioPresenter : AudioPresenter
@@ -32,4 +34,10 @@ class AudioPlayer : AppCompatActivity() {
         super.onDestroy()
         audioPresenter.onDestroy()
     }
+
+    override fun callErrorScreen() {
+        val errorScreenIntent = Intent(this, TrackError::class.java)
+        startActivity(errorScreenIntent)
+    }
+
 }
