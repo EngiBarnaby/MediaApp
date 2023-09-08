@@ -15,6 +15,15 @@ data class Track(
     val previewUrl : String
 ){
     companion object {
+
+        fun createJsonFromTrack(track: Track) : String {
+            return Gson().toJson(track)
+        }
+
+        fun createTrackFromJson(json : String) : Track {
+            return  Gson().fromJson(json, Track::class.java)
+        }
+
         fun createJsonFromTracksList(tracks: ArrayList<Track>): String {
             return Gson().toJson(tracks)
         }

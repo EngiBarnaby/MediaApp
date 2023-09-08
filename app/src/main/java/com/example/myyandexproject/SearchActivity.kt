@@ -40,7 +40,7 @@ class SearchActivity : AppCompatActivity() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val INPUT_DEBOUNCE_DELAY = 1500L
 
-        private const val TRACK_ID_KEY = "track_id_key"
+        private const val TRACK_DATA = "track_data"
 
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
@@ -104,7 +104,7 @@ class SearchActivity : AppCompatActivity() {
 
         historyTrackAdapter.setTrackClickListener( object : TrackClick {
             override fun onClick(track: Track) {
-                startMediaActivity(track.trackId)
+                startMediaActivity(track)
             }
         })
 
@@ -121,7 +121,7 @@ class SearchActivity : AppCompatActivity() {
                     .putString(MUSIC_HISTORY, Track.createJsonFromTracksList(historyTracks))
                     .apply()
                 historyTrackAdapter.notifyDataSetChanged()
-                startMediaActivity(track.trackId)
+                startMediaActivity(track)
             }
         })
 
@@ -221,10 +221,11 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-    private fun startMediaActivity(track_id : Int){
+    private fun startMediaActivity(track : Track){
         if (clickDebounce()) {
             val audioPlayerIntent = Intent(this, AudioPlayer::class.java)
-            audioPlayerIntent.putExtra(TRACK_ID_KEY, track_id)
+            val trackData = Track.createJsonFromTrack(track)
+            audioPlayerIntent.putExtra(TRACK_DATA, trackData)
             startActivity(audioPlayerIntent)
         }
     }

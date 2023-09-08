@@ -1,6 +1,5 @@
 package com.example.myyandexproject.presentation.audio_player
 
-import android.app.Activity
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Handler
@@ -12,7 +11,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.myyandexproject.R
 import com.example.myyandexproject.domain.Creator
-import com.example.myyandexproject.domain.api.TrackInteractor
 import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.ui.player.AudioPlayer
 import com.google.android.material.button.MaterialButton
@@ -35,7 +33,7 @@ class AudioPresenter(private val view : AudioPlayer, private val context : Conte
     private lateinit var btnBack : TextView
     private lateinit var playBtn : MaterialButton
 
-    private var track : Track? = null
+    private lateinit var track : Track
 
     private var mediaPlayer = MediaPlayer()
     private var playerState = STATE_DEFAULT
@@ -48,7 +46,7 @@ class AudioPresenter(private val view : AudioPlayer, private val context : Conte
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
 
-        private const val TRACK_ID_KEY = "track_id_key"
+        private const val TRACK_DATA = "track_data"
         private const val TIMER_CHANGE_DELAY_MILLIS = 1000L
 
         private val interactor = Creator.getTracksInteractor()
@@ -74,23 +72,12 @@ class AudioPresenter(private val view : AudioPlayer, private val context : Conte
 
         val intent = view.intent
         val bundle = intent.extras
-        val trackId = bundle?.getInt(TRACK_ID_KEY)
+        val trackData = bundle?.getString(TRACK_DATA)
 
-        if (trackId != null) {
-            interactor.getSong(trackId, object : TrackInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>) {
-                    handler.post{
-                        if(foundTracks.isNotEmpty()){
-                            track = foundTracks.first()
-                            setValue(track!!)
-                            preparePlayer()
-                        }
-                        else{
-                            view.callErrorScreen()
-                        }
-                    }
-                }
-            })
+        if(trackData != null){
+            track = Track.createTrackFromJson(trackData)
+            setValue(track)
+            preparePlayer()
         }
 
         playBtn.setOnClickListener {
@@ -187,7 +174,7 @@ class AudioPresenter(private val view : AudioPlayer, private val context : Conte
         trackTitle.text = track.trackName
         bandTitle.text = track.artistName
         currentDuration.text = view.getString(R.string.initial_time)
-        albumValue.text = track.collectionName
+        albumValue.text = track?.collectionName
         yearValue.text = getYearFromReleaseDate(track.releaseDate)
         genreValue.text = track.primaryGenreName
         country.text = track.country
