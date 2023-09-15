@@ -1,45 +1,26 @@
-package com.example.myyandexproject
+package com.example.myyandexproject.presentation.audio_player
 
+import android.content.Context
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.myyandexproject.repository.Track
-import com.example.myyandexproject.repository.TrackResponse
-import com.example.myyandexproject.retrofit_services.ItunesApi
-import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
-import com.example.myyandexproject.utils.SUCCESS_RESPONSE
-import com.example.myyandexproject.utils.convertTime
+import com.example.myyandexproject.R
+import com.example.myyandexproject.domain.Creator
+import com.example.myyandexproject.domain.models.Track
+import com.example.myyandexproject.ui.player.AudioPlayer
 import com.google.android.material.button.MaterialButton
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import com.example.myyandexproject.utils.convertTime
 
-class AudioPlayer : AppCompatActivity() {
+class AudioPresenter(private val view : AudioPlayer, private val context : Context) {
 
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-
-        private const val TRACK_ID_KEY = "track_id_key"
-        private const val TIMER_CHANGE_DELAY_MILLIS = 1000L
-    }
-
-    private val retrofitClient = RetrofitItunesClient.getClient()
-    private val itunesService = retrofitClient.create(ItunesApi::class.java)
     private lateinit var trackTitle : TextView
     private lateinit var bandTitle : TextView
     private lateinit var currentDuration : TextView
@@ -52,42 +33,51 @@ class AudioPlayer : AppCompatActivity() {
     private lateinit var btnBack : TextView
     private lateinit var playBtn : MaterialButton
 
-    private var track : Track? = null
+    private lateinit var track : Track
 
     private var mediaPlayer = MediaPlayer()
     private var playerState = STATE_DEFAULT
 
     private val handler = Handler(Looper.getMainLooper())
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_audio_player)
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
 
-        trackTitle = findViewById<TextView>(R.id.trackTitle)
-        bandTitle = findViewById<TextView>(R.id.bandTitle)
-        currentDuration = findViewById<TextView>(R.id.currentDuration)
-        durationValue = findViewById<TextView>(R.id.durationValue)
-        albumValue = findViewById<TextView>(R.id.albumValue)
-        yearValue = findViewById<TextView>(R.id.yearValue)
-        genreValue = findViewById<TextView>(R.id.genreValue)
-        trackImage = findViewById<ImageView>(R.id.imageView)
-        country = findViewById<TextView>(R.id.country)
-        btnBack = findViewById(R.id.btnBack)
-        playBtn = findViewById(R.id.fab2)
+        private const val TRACK_DATA = "track_data"
+        private const val TIMER_CHANGE_DELAY_MILLIS = 1000L
+
+        private val interactor = Creator.getTracksInteractor()
+    }
+
+    fun onCreate() {
+
+        trackTitle = view.findViewById(R.id.trackTitle)
+        bandTitle = view.findViewById(R.id.bandTitle)
+        currentDuration = view.findViewById(R.id.currentDuration)
+        durationValue = view.findViewById(R.id.durationValue)
+        albumValue = view.findViewById(R.id.albumValue)
+        yearValue = view.findViewById(R.id.yearValue)
+        genreValue = view.findViewById(R.id.genreValue)
+        trackImage = view.findViewById(R.id.imageView)
+        country = view.findViewById(R.id.country)
+        btnBack = view.findViewById(R.id.btnBack)
+        playBtn = view.findViewById(R.id.fab2)
 
         btnBack.setOnClickListener {
-            super.onBackPressed()
+            view.onBackPressed()
         }
 
-        val intent = intent
+        val intent = view.intent
         val bundle = intent.extras
-        val trackId = bundle?.getInt(TRACK_ID_KEY)
+        val trackData = bundle?.getString(TRACK_DATA)
 
-        if (trackId != null) {
-            getSong(trackId)
-        }
-        else{
-            Toast.makeText(applicationContext, "id тркека не было передано", Toast.LENGTH_SHORT).show()
+        if(trackData != null){
+            track = Track.createTrackFromJson(trackData)
+            setValue(track)
+            preparePlayer()
         }
 
         playBtn.setOnClickListener {
@@ -98,13 +88,8 @@ class AudioPlayer : AppCompatActivity() {
 
     }
 
-    override fun onPause() {
-        super.onPause()
-        pausePlayer()
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    fun onDestroy() {
         mediaPlayer.release()
         handler.removeCallbacksAndMessages(null)
     }
@@ -122,27 +107,6 @@ class AudioPlayer : AppCompatActivity() {
 
     private fun changeTime(){
         currentDuration.text = convertTime(mediaPlayer.currentPosition)
-    }
-
-    private fun getSong(id : Int){
-        itunesService.getSongById(id).enqueue( object : Callback<TrackResponse>{
-            override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if(response.code() == SUCCESS_RESPONSE){
-                    if (response.body()?.results?.isNotEmpty() == true) {
-                        track = response.body()?.results!![0]
-                        setValue(track!!)
-                        preparePlayer()
-                    }
-                    else {
-                        Toast.makeText(applicationContext, "Трэк с этим id не был найден", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                Toast.makeText(applicationContext, resources.getString(R.string.failure_get_song), Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun getBigImageUrl(url : String?) : String? {
@@ -203,14 +167,14 @@ class AudioPlayer : AppCompatActivity() {
     private fun setListenerData(){
         playerState = STATE_PREPARED
         playBtn.setIconResource(R.drawable.baseline_play_arrow_24)
-        currentDuration.text = getString(R.string.initial_time)
+        currentDuration.text = view.getString(R.string.initial_time)
     }
 
     private fun setValue(track : Track){
         trackTitle.text = track.trackName
         bandTitle.text = track.artistName
-        currentDuration.text = getString(R.string.initial_time)
-        albumValue.text = track.collectionName
+        currentDuration.text = view.getString(R.string.initial_time)
+        albumValue.text = track?.collectionName
         yearValue.text = getYearFromReleaseDate(track.releaseDate)
         genreValue.text = track.primaryGenreName
         country.text = track.country

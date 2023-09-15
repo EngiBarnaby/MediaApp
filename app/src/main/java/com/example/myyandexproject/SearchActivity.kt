@@ -2,7 +2,6 @@ package com.example.myyandexproject
 
 import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -15,19 +14,17 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.isEmpty
-import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myyandexproject.repository.Track
-import com.example.myyandexproject.repository.TrackResponse
-import com.example.myyandexproject.retrofit_services.ItunesApi
-import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
+import com.example.myyandexproject.ui.player.AudioPlayer
+import com.example.myyandexproject.domain.models.Track
+import com.example.myyandexproject.data.dto.TrackResponse
+import com.example.myyandexproject.data.network.ItunesApi
 import com.example.myyandexproject.track_recycle.TrackAdapter
 import com.example.myyandexproject.track_recycle.TrackClick
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +40,7 @@ class SearchActivity : AppCompatActivity() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val INPUT_DEBOUNCE_DELAY = 1500L
 
-        private const val TRACK_ID_KEY = "track_id_key"
+        private const val TRACK_DATA = "track_data"
 
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
@@ -107,7 +104,7 @@ class SearchActivity : AppCompatActivity() {
 
         historyTrackAdapter.setTrackClickListener( object : TrackClick {
             override fun onClick(track: Track) {
-                startMediaActivity(track.trackId)
+                startMediaActivity(track)
             }
         })
 
@@ -124,7 +121,7 @@ class SearchActivity : AppCompatActivity() {
                     .putString(MUSIC_HISTORY, Track.createJsonFromTracksList(historyTracks))
                     .apply()
                 historyTrackAdapter.notifyDataSetChanged()
-                startMediaActivity(track.trackId)
+                startMediaActivity(track)
             }
         })
 
@@ -144,7 +141,8 @@ class SearchActivity : AppCompatActivity() {
 
 
         btnBack.setOnClickListener {
-            super.onBackPressed()
+            val mainIntent = Intent(this, MainActivity::class.java)
+            startActivity(mainIntent)
         }
 
         clearHistoryBtn.setOnClickListener {
@@ -223,10 +221,11 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-    private fun startMediaActivity(track_id : Int){
+    private fun startMediaActivity(track : Track){
         if (clickDebounce()) {
             val audioPlayerIntent = Intent(this, AudioPlayer::class.java)
-            audioPlayerIntent.putExtra(TRACK_ID_KEY, track_id)
+            val trackData = Track.createJsonFromTrack(track)
+            audioPlayerIntent.putExtra(TRACK_DATA, trackData)
             startActivity(audioPlayerIntent)
         }
     }
@@ -237,10 +236,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun makeRequest(){
-        val s : String = inputSearch.text.toString()
+        val s = inputSearch.text.toString()
         progressBar.visibility = View.VISIBLE
         trackRecycle.visibility = View.GONE
-        itunesService.searchSong(s).enqueue(object  : Callback<TrackResponse>{
+        itunesService.searchSongs(s).enqueue(object  : Callback<TrackResponse>{
             override fun onResponse(
                 call: Call<TrackResponse>,
                 response: Response<TrackResponse>
