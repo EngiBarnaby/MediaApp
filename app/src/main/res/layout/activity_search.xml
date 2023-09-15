@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginTop="14dp"
+    android:paddingTop="16dp"
+    android:paddingHorizontal="16dp"
     >
 
 
@@ -197,4 +196,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

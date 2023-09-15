@@ -9,7 +9,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.player.AudioPlayer">
+        tools:context=".ui.player.activity.AudioPlayer">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftBorder"
@@ -82,13 +82,13 @@
             android:src="@drawable/baseline_library_add_24"
             app:backgroundTint="@color/custom_grey"
             app:tint="@android:color/white"
-            app:layout_constraintEnd_toStartOf="@id/fab2"
+            app:layout_constraintEnd_toStartOf="@id/playerBtn"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
             app:layout_constraintTop_toBottomOf="@id/bandTitle" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/fab2"
+            android:id="@+id/playerBtn"
             android:layout_width="84dp"
             android:layout_height="84dp"
             android:insetLeft="0dp"
@@ -112,9 +112,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text = "@string/initial_time"
-            app:layout_constraintEnd_toEndOf="@id/fab2"
-            app:layout_constraintStart_toStartOf="@id/fab2"
-            app:layout_constraintTop_toBottomOf="@id/fab2" />
+            app:layout_constraintEnd_toEndOf="@id/playerBtn"
+            app:layout_constraintStart_toStartOf="@id/playerBtn"
+            app:layout_constraintTop_toBottomOf="@id/playerBtn" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab3"
@@ -126,7 +126,7 @@
             app:tint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@id/fab"
             app:layout_constraintEnd_toEndOf="@id/rightBorder"
-            app:layout_constraintStart_toEndOf="@id/fab2"
+            app:layout_constraintStart_toEndOf="@id/playerBtn"
             app:layout_constraintTop_toTopOf="@id/fab" />
 
         <androidx.constraintlayout.widget.Barrier
