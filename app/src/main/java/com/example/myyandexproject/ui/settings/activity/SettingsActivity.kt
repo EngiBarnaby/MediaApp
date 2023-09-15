@@ -4,16 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.ActivitySettingsBinding
-import com.example.myyandexproject.ui.player.PlayerState
-import com.example.myyandexproject.ui.player.view_model.AudioPlayerViewModel
 import com.example.myyandexproject.ui.settings.view_model.SettingsViewModel
-import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
 
