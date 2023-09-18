@@ -92,7 +92,7 @@ class AudioPlayer : AppCompatActivity() {
         Glide.with(binding.imageView)
             .load(getBigImageUrl(track.artworkUrl100))
             .placeholder(R.drawable.track_image_placeholder)
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(15)))
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.round_image))))
             .into(binding.imageView)
     }
 }

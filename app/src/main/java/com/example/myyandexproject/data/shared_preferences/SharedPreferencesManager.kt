@@ -5,12 +5,13 @@ import android.content.SharedPreferences
 
 class SharedPreferencesManager(context: Context) : SharedPreferencesClient {
 
-    private var sharedPreferences: SharedPreferences =
-        context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
-
     companion object {
-        private val SHARED_PREFERENCES_KEY = "music_app_shared_preferences_key"
+        private val SHARED_PREFERENCES_NAME = "music_app_shared_preferences_key"
     }
+
+
+    private var sharedPreferences: SharedPreferences =
+        context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     override fun setBooleanValue(key: String, value: Boolean) {
         sharedPreferences.edit()

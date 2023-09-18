@@ -106,6 +106,7 @@ class SearchActivity : AppCompatActivity() {
 
         historyTrackAdapter.setTrackClickListener( object : TrackClick {
             override fun onClick(track: Track) {
+                viewModel.setHistoryTracks(track)
                 startMediaActivity(track)
             }
         })

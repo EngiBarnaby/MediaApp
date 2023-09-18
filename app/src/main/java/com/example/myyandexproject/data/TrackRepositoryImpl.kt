@@ -13,16 +13,16 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
             if(response.resultResponse == 200){
                 val tracks = (response as TrackResponse).results.map {
                     Track(
-                        it.trackId,
-                        it.trackName,
-                        it.artistName,
-                        it.trackTimeMillis,
-                        it.artworkUrl100,
-                        it?.collectionName,
-                        it.releaseDate,
-                        it.primaryGenreName,
-                        it.country,
-                        it.previewUrl
+                        trackId = it.trackId,
+                        trackName = it.trackName,
+                        artistName = it.artistName,
+                        trackTimeMillis = it.trackTimeMillis,
+                        artworkUrl100 = it.artworkUrl100,
+                        collectionName = it?.collectionName,
+                        releaseDate = it.releaseDate,
+                        primaryGenreName = it.primaryGenreName,
+                        country = it.country,
+                        previewUrl = it.previewUrl
                     )
                 }
                 return Resource.Success(tracks as ArrayList<Track>)

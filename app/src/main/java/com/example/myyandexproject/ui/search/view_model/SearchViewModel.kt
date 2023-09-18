@@ -22,7 +22,14 @@ class SearchViewModel(
     private val searchInteractor: SearchInteractor,
 ) : ViewModel() {
 
+
     private var historyTracks = MutableLiveData<ArrayList<Track>>()
+
+    init {
+        historyTracks.value = fetchHistoryTracks()
+    }
+
+
     private var textInput = MutableLiveData<String>("")
 
     private val stateLiveData = MutableLiveData<TrackState>()
@@ -34,11 +41,6 @@ class SearchViewModel(
 
     fun getHistoryTracks(): LiveData<ArrayList<Track>> = historyTracks
     fun getTextInput() : LiveData<String> = textInput
-
-    init {
-        historyTracks.value = fetchHistoryTracks()
-    }
-
 
     fun makeRequest(){
 
