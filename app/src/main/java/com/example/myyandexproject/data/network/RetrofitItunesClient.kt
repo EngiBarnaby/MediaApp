@@ -8,16 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.UnknownHostException
 
-class RetrofitItunesClient : NetworkClient {
-
-    private val itunesBaseUrl = "https://itunes.apple.com"
-
-    private var retrofit = Retrofit.Builder()
-        .baseUrl(itunesBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val itunesService = retrofit.create(ItunesApi::class.java)
+class RetrofitItunesClient(private val itunesService : ItunesApi) : NetworkClient {
 
     override fun doRequest(dto: Any): Response {
         try {

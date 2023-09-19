@@ -10,35 +10,22 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.myyandexproject.R
 import com.example.myyandexproject.ui.player.activity.AudioPlayer
 import com.example.myyandexproject.domain.search.models.Track
-import com.example.myyandexproject.data.dto.TrackResponse
-import com.example.myyandexproject.data.network.ItunesApi
-import com.example.myyandexproject.databinding.ActivityAudioPlayerBinding
 import com.example.myyandexproject.databinding.ActivitySearchBinding
-import com.example.myyandexproject.databinding.ActivitySettingsBinding
 import com.example.myyandexproject.domain.search.api.TrackState
 import com.example.myyandexproject.ui.search.recycle_view.TrackAdapter
 import com.example.myyandexproject.ui.search.recycle_view.TrackClick
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.example.myyandexproject.retrofit_services.RetrofitItunesClient
 import com.example.myyandexproject.ui.main.MainActivity
 import com.example.myyandexproject.ui.search.view_model.SearchViewModel
-import com.example.myyandexproject.ui.settings.view_model.SettingsViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class SearchActivity : AppCompatActivity() {
+
+    private val viewModel: SearchViewModel by viewModel()
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
@@ -48,7 +35,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private lateinit var binding : ActivitySearchBinding
-    private lateinit var viewModel: SearchViewModel
 
 
     private val trackAdapter = TrackAdapter()
@@ -64,7 +50,7 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory(this))[SearchViewModel::class.java]
+//        viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory(this))[SearchViewModel::class.java]
 
         viewModel.getHistoryTracks().observe(this){ outTracks ->
             historyTrackAdapter.tracks = outTracks
