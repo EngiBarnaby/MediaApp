@@ -12,7 +12,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
-//    private lateinit var viewModel : SettingsViewModel
     private val viewModel: SettingsViewModel by viewModel()
     private lateinit var binding : ActivitySettingsBinding
 
@@ -21,7 +20,6 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        viewModel = ViewModelProvider(this, SettingsViewModel.getViewModelFactory(this))[SettingsViewModel::class.java]
 
         viewModel.isDarkThemeState().observe(this){ themeState ->
             binding.settingThemeSwitcher.isChecked = themeState

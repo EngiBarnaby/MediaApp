@@ -14,10 +14,16 @@ import com.example.myyandexproject.utils.convertTime
 import com.example.myyandexproject.utils.getBigImageUrl
 import com.example.myyandexproject.utils.getYearFromReleaseDate
 import com.example.myyandexproject.ui.player.PlayerState
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class AudioPlayer : AppCompatActivity() {
 
-    private lateinit var viewModel: AudioPlayerViewModel
+    private val viewModel: AudioPlayerViewModel by viewModel {
+        parametersOf(
+            track
+        )
+    }
 
     private lateinit var binding : ActivityAudioPlayerBinding
     private lateinit var track : Track
@@ -30,11 +36,9 @@ class AudioPlayer : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         track = getTrackFromBundle()
         setTrackData(track)
 
-        viewModel = ViewModelProvider(this, AudioPlayerViewModel.getViewModelFactory(track))[AudioPlayerViewModel::class.java]
 
         viewModel.getPlayerState().observe(this){ playerState ->
             when(playerState){

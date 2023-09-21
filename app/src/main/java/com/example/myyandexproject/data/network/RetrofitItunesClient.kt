@@ -2,10 +2,7 @@ package com.example.myyandexproject.data.network
 
 import com.example.myyandexproject.data.NetworkClient
 import com.example.myyandexproject.data.dto.Response
-import com.example.myyandexproject.data.dto.TrackSearchByIdRequest
 import com.example.myyandexproject.data.dto.TrackSearchByNameRequest
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.net.UnknownHostException
 
 class RetrofitItunesClient(private val itunesService : ItunesApi) : NetworkClient {

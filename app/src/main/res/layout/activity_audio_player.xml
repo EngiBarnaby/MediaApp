@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.player.activity.AudioPlayer">
@@ -78,14 +77,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_marginTop="54dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="76dp"
             android:src="@drawable/baseline_library_add_24"
             app:backgroundTint="@color/custom_grey"
-            app:tint="@android:color/white"
-            app:layout_constraintEnd_toStartOf="@id/playerBtn"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toBottomOf="@id/bandTitle" />
+            app:layout_constraintTop_toBottomOf="@id/bandTitle"
+            app:tint="@android:color/white" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/playerBtn"
@@ -121,13 +120,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
+            android:layout_marginEnd="24dp"
             android:src="@drawable/baseline_favorite_border_24"
             app:backgroundTint="@color/custom_grey"
-            app:tint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@id/fab"
             app:layout_constraintEnd_toEndOf="@id/rightBorder"
-            app:layout_constraintStart_toEndOf="@id/playerBtn"
-            app:layout_constraintTop_toTopOf="@id/fab" />
+            app:layout_constraintTop_toTopOf="@id/fab"
+            app:layout_constraintVertical_bias="0.0"
+            app:tint="@android:color/white" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/descriptionBarrier"
@@ -139,82 +139,84 @@
 
         <TextView
             android:id="@+id/fullDurationTitle"
-            android:layout_width="wrap_content"
             style="@style/MediaProperty"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="@string/duration_title"
-            app:layout_constraintStart_toStartOf="@+id/leftBorder"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionBarrier" />
 
         <TextView
             android:id="@+id/albumTitle"
-            android:layout_width="wrap_content"
             style="@style/MediaProperty"
+            android:layout_width="wrap_content"
             android:text="@string/album_title"
-            app:layout_constraintStart_toStartOf="@+id/leftBorder"
+            app:layout_constraintStart_toStartOf="@+id/fullDurationTitle"
             app:layout_constraintTop_toBottomOf="@+id/fullDurationTitle" />
 
         <TextView
             android:id="@+id/yearTitle"
-            android:layout_width="wrap_content"
             style="@style/MediaProperty"
+            android:layout_width="wrap_content"
             android:text="@string/release_year"
-            app:layout_constraintStart_toStartOf="@+id/leftBorder"
+            app:layout_constraintStart_toStartOf="@+id/albumTitle"
             app:layout_constraintTop_toBottomOf="@+id/albumTitle" />
 
         <TextView
             android:id="@+id/genreTitle"
-            android:layout_width="wrap_content"
             style="@style/MediaProperty"
+            android:layout_width="wrap_content"
             android:text="@string/genre_title"
-            app:layout_constraintStart_toStartOf="@+id/leftBorder"
+            app:layout_constraintStart_toStartOf="@+id/yearTitle"
             app:layout_constraintTop_toBottomOf="@+id/yearTitle" />
 
         <TextView
             android:id="@+id/countryTitle"
-            android:layout_width="wrap_content"
             style="@style/MediaProperty"
+            android:layout_width="wrap_content"
             android:text="@string/county_title"
-            app:layout_constraintTop_toBottomOf="@id/genreTitle"
-            app:layout_constraintStart_toEndOf="@id/leftBorder"/>
+            app:layout_constraintStart_toStartOf="@+id/genreTitle"
+            app:layout_constraintTop_toBottomOf="@id/genreTitle" />
 
         <TextView
             android:id="@+id/durationValue"
-            android:layout_width="wrap_content"
             style="@style/MediaPropertyValue"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="TextView"
-            app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionBarrier" />
 
         <TextView
             android:id="@+id/albumValue"
-            android:layout_width="wrap_content"
             style="@style/MediaPropertyValue"
+            android:layout_width="wrap_content"
             android:text="TextView"
-            app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+            app:layout_constraintEnd_toEndOf="@+id/durationValue"
             app:layout_constraintTop_toBottomOf="@+id/durationValue" />
 
         <TextView
             android:id="@+id/yearValue"
-            android:layout_width="wrap_content"
             style="@style/MediaPropertyValue"
+            android:layout_width="wrap_content"
             android:text="TextView"
-            app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+            app:layout_constraintEnd_toEndOf="@+id/albumValue"
             app:layout_constraintTop_toBottomOf="@+id/albumValue" />
 
         <TextView
             android:id="@+id/genreValue"
-            android:layout_width="wrap_content"
             style="@style/MediaPropertyValue"
+            android:layout_width="wrap_content"
             android:text="TextView"
-            app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+            app:layout_constraintEnd_toEndOf="@+id/yearValue"
             app:layout_constraintTop_toBottomOf="@+id/yearValue" />
 
         <TextView
             android:id="@+id/country"
-            android:layout_width="wrap_content"
             style="@style/MediaPropertyValue"
+            android:layout_width="wrap_content"
             android:text="TextView"
-            app:layout_constraintEnd_toStartOf="@id/rightBorder"
+            app:layout_constraintEnd_toEndOf="@+id/genreValue"
             app:layout_constraintTop_toBottomOf="@id/genreValue" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

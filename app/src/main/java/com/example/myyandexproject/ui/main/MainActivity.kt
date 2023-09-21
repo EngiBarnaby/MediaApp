@@ -14,12 +14,6 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
-    private val interactor: SettingsInteractor by inject()
-
-    companion object {
-        private const val THEME_KEY = "THEME_KEY"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,14 +21,6 @@ class MainActivity : AppCompatActivity() {
         val searchBtn = findViewById<Button>(R.id.searchBtn)
         val settingBtn = findViewById<Button>(R.id.settingBtn)
         val mediaBtn = findViewById<Button>(R.id.mediaBtn)
-
-        val themeState = interactor.getThemeStatus(THEME_KEY)
-
-        if (themeState) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
 
 
         searchBtn.setOnClickListener {

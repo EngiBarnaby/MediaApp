@@ -50,8 +50,6 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory(this))[SearchViewModel::class.java]
-
         viewModel.getHistoryTracks().observe(this){ outTracks ->
             historyTrackAdapter.tracks = outTracks
             historyTrackAdapter.notifyDataSetChanged()
@@ -111,8 +109,9 @@ class SearchActivity : AppCompatActivity() {
         binding.trackList.adapter = trackAdapter
 
         binding.btnBack.setOnClickListener {
-            val mainIntent = Intent(this, MainActivity::class.java)
-            startActivity(mainIntent)
+//            val mainIntent = Intent(this, MainActivity::class.java)
+//            startActivity(mainIntent)
+            finish()
         }
 
         binding.clearHistoryBtn.setOnClickListener {
