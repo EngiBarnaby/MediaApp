@@ -5,14 +5,14 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.ActivitySettingsBinding
 import com.example.myyandexproject.ui.settings.view_model.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var viewModel : SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModel()
     private lateinit var binding : ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,6 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, SettingsViewModel.getViewModelFactory(this))[SettingsViewModel::class.java]
 
         viewModel.isDarkThemeState().observe(this){ themeState ->
             binding.settingThemeSwitcher.isChecked = themeState

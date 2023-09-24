@@ -62,7 +62,7 @@
         <item name="android:backgroundTint">@color/white</item>
     </style>
     <style name="HistoryTitle">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">19sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/white</item>
     </style>
@@ -97,6 +97,11 @@
     </style>
     <style name="MediaImageTrack">
 <!--        <item name="android:background">@color/main_background_night</item>-->
+    </style>
+    <style name="searchInput">
+        <item name="android:textColor">@color/main_background_night</item>
+        <item name="android:textColorHint">@color/main_background_night</item>
+        <item name="android:drawableTint">@color/main_background_night</item>
     </style>
 
 </resources>

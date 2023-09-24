@@ -48,14 +48,13 @@
             android:layout_height="match_parent"
             android:hint="@string/hint_search"
             android:drawableStart="@drawable/search_icon"
-            android:drawableTint="@color/custom_grey"
             android:drawablePadding="4dp"
             android:paddingStart="15dp"
             android:layout_weight="1"
             android:background="@null"
-            android:maxLines="1"
             android:inputType="text"
-
+            android:textSize="16sp"
+            style="@style/searchInput"
             />
         <ImageView
             android:id="@+id/clearIcon"

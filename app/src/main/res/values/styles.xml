@@ -105,4 +105,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">5dp</item>
     </style>
+    <style name="searchInput">
+        <item name="android:textColor">@color/main_background_night</item>
+        <item name="android:textColorHint">@color/custom_grey</item>
+        <item name="android:drawableTint">@color/custom_grey</item>
+    </style>
 </resources>

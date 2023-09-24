@@ -1,15 +1,9 @@
 package com.example.myyandexproject.ui.search.view_model
 
-import android.content.Context
-import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.myyandexproject.creator.Creator
 import com.example.myyandexproject.data.dto.Resource
 import com.example.myyandexproject.domain.search.models.Track
 import com.example.myyandexproject.domain.search.api.SearchInteractor
@@ -18,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    context: Context,
     private val searchInteractor: SearchInteractor,
 ) : ViewModel() {
 
@@ -107,15 +100,6 @@ class SearchViewModel(
     companion object {
         private const val EDIT_TEXT_VAL = "EDIT_TEXT_VAL"
         private const val MUSIC_HISTORY = "MUSIC_HISTORY"
-
-        fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(
-                    context,
-                    Creator.getSearchInteractor(context)
-                )
-            }
-        }
     }
 
 }

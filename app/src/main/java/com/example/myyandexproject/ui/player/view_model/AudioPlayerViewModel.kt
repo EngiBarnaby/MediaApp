@@ -3,7 +3,6 @@ package com.example.myyandexproject.ui.player.view_model
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,11 +15,12 @@ import com.example.myyandexproject.ui.player.PlayerState
 import com.example.myyandexproject.utils.convertTime
 
 class AudioPlayerViewModel(
-    private var track: Track
+    private var track: Track,
+    private val mediaPlayer: MediaPlayer
 ) : ViewModel() {
 
     private val handler = Handler(Looper.getMainLooper())
-    private var mediaPlayer = MediaPlayer()
+//    private var mediaPlayer = MediaPlayer()
 
     private var playerState = MutableLiveData(PlayerState.STATE_DEFAULT)
     private var currentTrackTime = MutableLiveData("00:00")
@@ -80,11 +80,11 @@ class AudioPlayerViewModel(
 
     companion object {
         private const val TIMER_CHANGE_DELAY_MILLIS = 1000L
-        fun getViewModelFactory(track : Track) : ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                AudioPlayerViewModel(track)
-            }
-        }
+//        fun getViewModelFactory(track : Track) : ViewModelProvider.Factory = viewModelFactory {
+//            initializer {
+//                AudioPlayerViewModel(track)
+//            }
+//        }
     }
 
 }
