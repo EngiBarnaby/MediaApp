@@ -110,4 +110,8 @@
         <item name="android:textColorHint">@color/custom_grey</item>
         <item name="android:drawableTint">@color/custom_grey</item>
     </style>
+    <style name="tableStyle">
+        <item name="tabTextColor">@color/black</item>
+        <item name="tabIndicatorColor">@color/black</item>
+    </style>
 </resources>

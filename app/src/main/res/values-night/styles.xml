@@ -103,5 +103,8 @@
         <item name="android:textColorHint">@color/main_background_night</item>
         <item name="android:drawableTint">@color/main_background_night</item>
     </style>
-
+    <style name="tableStyle">
+        <item name="tabTextColor">@color/white</item>
+        <item name="tabIndicatorColor">@color/white</item>
+    </style>
 </resources>
