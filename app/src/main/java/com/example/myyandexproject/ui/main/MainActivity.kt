@@ -4,13 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import androidx.appcompat.app.AppCompatDelegate
-import com.example.myyandexproject.ui.media.MediaActivity
+import com.example.myyandexproject.ui.media.activity.MediaActivity
 import com.example.myyandexproject.R
-import com.example.myyandexproject.domain.settings.api.SettingsInteractor
 import com.example.myyandexproject.ui.search.activity.SearchActivity
 import com.example.myyandexproject.ui.settings.activity.SettingsActivity
-import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
