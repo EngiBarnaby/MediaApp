@@ -2,16 +2,15 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/searchFragment">
-
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.example.myyandexproject.ui.search.fragments.SearchFragment"
-        android:label="SearchFragment" />
+    app:startDestination="@id/mainMediaFragment">
     <fragment
         android:id="@+id/mainMediaFragment"
         android:name="com.example.myyandexproject.ui.media.fragments.MainMediaFragment"
         android:label="MainMediaFragment" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.myyandexproject.ui.search.fragments.SearchFragment"
+        android:label="SearchFragment" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.myyandexproject.ui.settings.fragments.SettingsFragment"

@@ -124,7 +124,7 @@ class SearchFragment : Fragment() {
             val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             val currentFocusView = requireActivity()?.currentFocus
             if (currentFocusView != null) {
-                inputMethodManager.hideSoftInputFromWindow(currentFocusView!!.windowToken, 0)
+                inputMethodManager.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
             }
             binding.searchInput.setText("")
             trackAdapter.tracks.clear()
