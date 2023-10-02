@@ -1,33 +1,37 @@
-package com.example.myyandexproject.ui.settings.activity
+package com.example.myyandexproject.ui.settings.fragments
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import com.example.myyandexproject.R
-import com.example.myyandexproject.databinding.ActivitySettingsBinding
+import com.example.myyandexproject.databinding.FragmentSettingsBinding
+import com.example.myyandexproject.ui.media.fragments.MainMediaFragment
 import com.example.myyandexproject.ui.settings.view_model.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
+
+class SettingsFragment : Fragment() {
 
     private val viewModel: SettingsViewModel by viewModel()
-    private lateinit var binding : ActivitySettingsBinding
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.isDarkThemeState().observe(this){ themeState ->
+        viewModel.isDarkThemeState().observe(viewLifecycleOwner){ themeState ->
             binding.settingThemeSwitcher.isChecked = themeState
-        }
-
-
-        binding.btnBack.setOnClickListener {
-            super.onBackPressed();
         }
 
         binding.btnWriteSupport.setOnClickListener {
@@ -50,8 +54,8 @@ class SettingsActivity : AppCompatActivity() {
             }
             viewModel.setThemeState(isChecked)
         }
-    }
 
+    }
 
     private fun openShareClient(){
         val url = getString(R.string.share_url)
@@ -81,4 +85,8 @@ class SettingsActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(intent, getString(R.string.email_info_text)))
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

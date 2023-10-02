@@ -44,4 +44,7 @@
     <string name="no_playlist_yet">Вы не создали ни одного плейлиста</string>
     <string name="table_name_favorite">Избранные треки</string>
     <string name="table_name_playlist">Плейлист</string>
+    <string name="menu_search">Поиск</string>
+    <string name="menu_media">Медиатека</string>
+    <string name="menu_settings">Настройки</string>
 </resources>

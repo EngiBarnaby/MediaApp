@@ -1,29 +1,33 @@
-package com.example.myyandexproject.ui.search.activity
+package com.example.myyandexproject.ui.search.fragments
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myyandexproject.R
-import com.example.myyandexproject.ui.player.activity.AudioPlayer
-import com.example.myyandexproject.domain.search.models.Track
-import com.example.myyandexproject.databinding.ActivitySearchBinding
+import com.example.myyandexproject.databinding.FragmentSearchBinding
 import com.example.myyandexproject.domain.search.api.TrackState
+import com.example.myyandexproject.domain.search.models.Track
+import com.example.myyandexproject.ui.player.activity.AudioPlayer
 import com.example.myyandexproject.ui.search.recycle_view.TrackAdapter
 import com.example.myyandexproject.ui.search.recycle_view.TrackClick
-import com.example.myyandexproject.ui.main.MainActivity
 import com.example.myyandexproject.ui.search.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
+
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: SearchViewModel by viewModel()
 
@@ -34,8 +38,6 @@ class SearchActivity : AppCompatActivity() {
         private const val TRACK_DATA = "track_data"
     }
 
-    private lateinit var binding : ActivitySearchBinding
-
 
     private val trackAdapter = TrackAdapter()
     private val historyTrackAdapter = TrackAdapter()
@@ -44,22 +46,25 @@ class SearchActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { makeRequest() }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getHistoryTracks().observe(this){ outTracks ->
+        viewModel.getHistoryTracks().observe(viewLifecycleOwner){ outTracks ->
             historyTrackAdapter.tracks = outTracks
             historyTrackAdapter.notifyDataSetChanged()
         }
 
-        viewModel.getTextInput().observe(this){ text ->
+        viewModel.getTextInput().observe(viewLifecycleOwner){ text ->
             binding.searchInput.setText(text)
         }
 
-        viewModel.getTrackState().observe(this){ state ->
+        viewModel.getTrackState().observe(viewLifecycleOwner){ state ->
             when(state){
                 is TrackState.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
@@ -102,17 +107,12 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-        binding.historyTracks.layoutManager = LinearLayoutManager(this)
+        binding.historyTracks.layoutManager = LinearLayoutManager(requireContext())
         binding.historyTracks.adapter = historyTrackAdapter
 
-        binding.trackList.layoutManager = LinearLayoutManager(this)
+        binding.trackList.layoutManager = LinearLayoutManager(requireContext())
         binding.trackList.adapter = trackAdapter
 
-        binding.btnBack.setOnClickListener {
-//            val mainIntent = Intent(this, MainActivity::class.java)
-//            startActivity(mainIntent)
-            finish()
-        }
 
         binding.clearHistoryBtn.setOnClickListener {
             viewModel.clearHistory()
@@ -121,9 +121,10 @@ class SearchActivity : AppCompatActivity() {
         }
 
         binding.clearIcon.setOnClickListener {
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (currentFocus != null) {
-                inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+            val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val currentFocusView = requireActivity()?.currentFocus
+            if (currentFocusView != null) {
+                inputMethodManager.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
             }
             binding.searchInput.setText("")
             trackAdapter.tracks.clear()
@@ -181,12 +182,11 @@ class SearchActivity : AppCompatActivity() {
         binding.refreshBtn.setOnClickListener {
             makeRequest()
         }
-
     }
 
     private fun startMediaActivity(track : Track){
         if (clickDebounce()) {
-            val audioPlayerIntent = Intent(this, AudioPlayer::class.java)
+            val audioPlayerIntent = Intent(requireContext(), AudioPlayer::class.java)
             val trackData = Track.createJsonFromTrack(track)
             audioPlayerIntent.putExtra(TRACK_DATA, trackData)
             startActivity(audioPlayerIntent)
@@ -199,14 +199,14 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, INPUT_DEBOUNCE_DELAY)
+        handler.postDelayed(searchRunnable, SearchFragment.INPUT_DEBOUNCE_DELAY)
     }
 
     private fun clickDebounce() : Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            handler.postDelayed({ isClickAllowed = true }, SearchFragment.CLICK_DEBOUNCE_DELAY)
         }
         return current
     }
