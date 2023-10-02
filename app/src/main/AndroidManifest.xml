@@ -25,15 +25,6 @@
             android:name=".ui.test.TestActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.media.activity.MediaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.search.activity.SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.settings.activity.SettingsActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>

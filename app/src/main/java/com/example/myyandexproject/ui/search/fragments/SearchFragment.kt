@@ -12,14 +12,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentSearchBinding
 import com.example.myyandexproject.domain.search.api.TrackState
 import com.example.myyandexproject.domain.search.models.Track
 import com.example.myyandexproject.ui.player.activity.AudioPlayer
-import com.example.myyandexproject.ui.search.activity.SearchActivity
 import com.example.myyandexproject.ui.search.recycle_view.TrackAdapter
 import com.example.myyandexproject.ui.search.recycle_view.TrackClick
 import com.example.myyandexproject.ui.search.view_model.SearchViewModel
@@ -115,10 +113,6 @@ class SearchFragment : Fragment() {
         binding.trackList.layoutManager = LinearLayoutManager(requireContext())
         binding.trackList.adapter = trackAdapter
 
-        binding.btnBack.setOnClickListener {
-//            finish()
-            findNavController().navigateUp()
-        }
 
         binding.clearHistoryBtn.setOnClickListener {
             viewModel.clearHistory()
