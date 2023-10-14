@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentSearchBinding
@@ -21,6 +22,7 @@ import com.example.myyandexproject.ui.player.activity.AudioPlayer
 import com.example.myyandexproject.ui.search.recycle_view.TrackAdapter
 import com.example.myyandexproject.ui.search.recycle_view.TrackClick
 import com.example.myyandexproject.ui.search.view_model.SearchViewModel
+import com.example.myyandexproject.utils.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -31,8 +33,10 @@ class SearchFragment : Fragment() {
 
     private val viewModel: SearchViewModel by viewModel()
 
+    private lateinit var onTrackClickDebounce: (Track) -> Unit
+
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 500L
         private const val INPUT_DEBOUNCE_DELAY = 1500L
 
         private const val TRACK_DATA = "track_data"
@@ -54,6 +58,11 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        onTrackClickDebounce = debounce<Track>(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false) { track ->
+            viewModel.setHistoryTracks(track)
+            startMediaActivity(track)
+        }
 
         viewModel.getHistoryTracks().observe(viewLifecycleOwner){ outTracks ->
             historyTrackAdapter.tracks = outTracks
@@ -95,15 +104,13 @@ class SearchFragment : Fragment() {
 
         historyTrackAdapter.setTrackClickListener( object : TrackClick {
             override fun onClick(track: Track) {
-                viewModel.setHistoryTracks(track)
-                startMediaActivity(track)
+                onTrackClickDebounce(track)
             }
         })
 
         trackAdapter.setTrackClickListener(object : TrackClick {
             override fun onClick(track: Track) {
-                viewModel.setHistoryTracks(track)
-                startMediaActivity(track)
+                  onTrackClickDebounce(track)
             }
         })
 
@@ -206,7 +213,7 @@ class SearchFragment : Fragment() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, SearchFragment.CLICK_DEBOUNCE_DELAY)
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
         }
         return current
     }

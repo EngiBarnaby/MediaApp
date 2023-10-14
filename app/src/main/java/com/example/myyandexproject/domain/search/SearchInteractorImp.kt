@@ -5,7 +5,7 @@ import com.example.myyandexproject.data.shared_preferences.SharedPreferencesClie
 import com.example.myyandexproject.domain.search.api.TrackRepository
 import com.example.myyandexproject.domain.search.api.SearchInteractor
 import com.example.myyandexproject.domain.search.models.Track
-import java.util.concurrent.Executors
+import kotlinx.coroutines.flow.Flow
 
 class SearchInteractorImp(
     private val sharedManager: SharedPreferencesClient,
@@ -28,7 +28,7 @@ class SearchInteractorImp(
         sharedManager.setStringValue(key, value)
     }
 
-    override fun getSongs(term: String) : Resource<ArrayList<Track>> {
+    override fun getSongs(term: String) : Flow<Resource<ArrayList<Track>>> {
         return repository.getSongs(term)
     }
 }

@@ -50,7 +50,7 @@ class AudioPlayer : AppCompatActivity() {
                 }
                 PlayerState.STATE_PREPARED -> {
                     binding.playerBtn.setIconResource(R.drawable.baseline_play_arrow_24)
-                    binding.currentDuration.text = getString(R.string.initial_time)
+                    viewModel.preparedPlayer()
                 }
             }
         }

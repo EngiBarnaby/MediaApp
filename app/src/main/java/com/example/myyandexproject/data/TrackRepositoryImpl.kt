@@ -5,9 +5,11 @@ import com.example.myyandexproject.data.dto.TrackResponse
 import com.example.myyandexproject.data.dto.TrackSearchByNameRequest
 import com.example.myyandexproject.domain.search.api.TrackRepository
 import com.example.myyandexproject.domain.search.models.Track
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepository {
-    override fun getSongs(term: String): Resource<ArrayList<Track>> {
+    override fun getSongs(term: String): Flow<Resource<ArrayList<Track>>> = flow {
         try {
             val response = networkClient.doRequest(TrackSearchByNameRequest(term))
             if(response.resultResponse == 200){
@@ -25,14 +27,14 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
                         previewUrl = it.previewUrl
                     )
                 }
-                return Resource.Success(tracks as ArrayList<Track>)
+                emit(Resource.Success(tracks as ArrayList<Track>))
             }
             else {
-                return Resource.Error("Ошибка сервера")
+                emit(Resource.Error("Ошибка сервера"))
             }
         }
         catch (e : Throwable){
-            return Resource.Error("Ошибка сервера")
+            emit(Resource.Error("Ошибка сервера"))
         }
     }
 }

@@ -9,6 +9,7 @@ import com.example.myyandexproject.domain.search.models.Track
 import com.example.myyandexproject.domain.search.api.SearchInteractor
 import com.example.myyandexproject.domain.search.api.TrackState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
@@ -29,52 +30,51 @@ class SearchViewModel(
     fun getTrackState(): LiveData<TrackState> = stateLiveData
 
     private fun renderState(state: TrackState) {
-        stateLiveData.value = state
+        stateLiveData.postValue(state)
     }
 
     fun getHistoryTracks(): LiveData<ArrayList<Track>> = historyTracks
-    fun getTextInput() : LiveData<String> = textInput
+    fun getTextInput(): LiveData<String> = textInput
 
-    fun makeRequest(){
-
+    fun makeRequest() {
         renderState(TrackState.Loading)
-
         viewModelScope.launch(Dispatchers.IO) {
-            val response = searchInteractor.getSongs(getInputText())
-            viewModelScope.launch(Dispatchers.Main) {
-                when(response){
-                    is Resource.Success -> {
-                        if(response.data != null){
-                            if(response.data.isEmpty()){
-                                renderState(TrackState.Empty("Список пуст"))
-                            }
-                            else{
-                                renderState(TrackState.Content(response.data))
+            searchInteractor
+                .getSongs(getInputText())
+                .collect { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            if (resource.data != null) {
+                                if (resource.data.isEmpty()) {
+                                    renderState(TrackState.Empty("Список пуст"))
+                                } else {
+                                    renderState(TrackState.Content(resource.data))
+                                }
                             }
                         }
-                    }
-                    is Resource.Error -> {
-                        renderState(TrackState.Error("Ошибка сервера"))
+
+                        is Resource.Error -> {
+                            renderState(TrackState.Error("Ошибка сервера"))
+                        }
                     }
                 }
-            }
         }
     }
 
-    fun setInputText(text : String){
+    fun setInputText(text: String) {
         searchInteractor.setSearchText(EDIT_TEXT_VAL, text)
     }
 
-    private fun getInputText() : String{
+    private fun getInputText(): String {
         return searchInteractor.getSearchText(EDIT_TEXT_VAL)
     }
 
-    fun clearHistory(){
+    fun clearHistory() {
         searchInteractor.setHistoryTracksToShared(MUSIC_HISTORY, "[]")
         historyTracks.value?.clear()
     }
 
-    fun setHistoryTracks(track : Track){
+    fun setHistoryTracks(track: Track) {
         historyTracks.postValue(historyTracks.value?.apply {
             if (contains(track)) {
                 remove(track)
