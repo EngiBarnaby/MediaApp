@@ -78,9 +78,4 @@ class AudioPlayerViewModel(
     override fun onCleared() {
         mediaPlayer.release()
     }
-
-    companion object {
-        private const val TIMER_CHANGE_DELAY_MILLIS = 1000L
-    }
-
 }

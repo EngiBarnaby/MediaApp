@@ -3,8 +3,6 @@ package com.example.myyandexproject.ui.search.fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -23,6 +21,9 @@ import com.example.myyandexproject.ui.search.recycle_view.TrackAdapter
 import com.example.myyandexproject.ui.search.recycle_view.TrackClick
 import com.example.myyandexproject.ui.search.view_model.SearchViewModel
 import com.example.myyandexproject.utils.debounce
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -42,13 +43,12 @@ class SearchFragment : Fragment() {
         private const val TRACK_DATA = "track_data"
     }
 
+    private var latestSearchText: String? = null
+    private var searchJob: Job? = null
+
 
     private val trackAdapter = TrackAdapter()
     private val historyTrackAdapter = TrackAdapter()
-
-    private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
-    private val searchRunnable = Runnable { makeRequest() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -174,7 +174,7 @@ class SearchFragment : Fragment() {
                     binding.searchInput.hint = getString(R.string.search)
                 } else {
                     binding.searchInput.hint = ""
-                    searchDebounce()
+                    searchDebounce(s.toString())
                 }
                 binding.clearIcon.visibility = clearIconIsVisible(s)
             }
@@ -192,30 +192,28 @@ class SearchFragment : Fragment() {
     }
 
     private fun startMediaActivity(track : Track){
-        if (clickDebounce()) {
             val audioPlayerIntent = Intent(requireContext(), AudioPlayer::class.java)
             val trackData = Track.createJsonFromTrack(track)
             audioPlayerIntent.putExtra(TRACK_DATA, trackData)
             startActivity(audioPlayerIntent)
-        }
     }
 
     private fun makeRequest(){
         viewModel.makeRequest()
     }
 
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SearchFragment.INPUT_DEBOUNCE_DELAY)
-    }
-
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+    private fun searchDebounce(inputText : String) {
+        if (latestSearchText == inputText) {
+            return
         }
-        return current
+
+        latestSearchText = inputText
+
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            delay(INPUT_DEBOUNCE_DELAY)
+            makeRequest()
+        }
     }
 
     private fun clearIconIsVisible(s : CharSequence?) : Int {

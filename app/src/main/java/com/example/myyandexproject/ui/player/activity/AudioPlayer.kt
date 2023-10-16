@@ -76,6 +76,11 @@ class AudioPlayer : AppCompatActivity() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.pausePlayer()
+    }
+
     private fun getTrackFromBundle() : Track {
         val bundle = intent.extras
         val trackData = bundle?.getString(TRACK_DATA)
