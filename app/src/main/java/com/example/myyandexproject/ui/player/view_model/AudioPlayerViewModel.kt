@@ -1,23 +1,24 @@
 package com.example.myyandexproject.ui.player.view_model
 
 import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 
 import com.example.myyandexproject.domain.search.models.Track
 import com.example.myyandexproject.ui.player.PlayerState
 import com.example.myyandexproject.utils.convertTime
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
     private var track: Track,
     private val mediaPlayer: MediaPlayer
 ) : ViewModel() {
 
-    private val handler = Handler(Looper.getMainLooper())
-//    private var mediaPlayer = MediaPlayer()
+    private var timerJob: Job? = null
 
     private var playerState = MutableLiveData(PlayerState.STATE_DEFAULT)
     private var currentTrackTime = MutableLiveData("00:00")
@@ -38,17 +39,21 @@ class AudioPlayerViewModel(
     fun pausePlayer() {
         mediaPlayer.pause()
         playerState.value = PlayerState.STATE_PAUSED
+        timerJob?.cancel()
+    }
+
+    fun preparedPlayer(){
+        timerJob?.cancel()
+        currentTrackTime.value = "00:00"
     }
 
     private fun startChanger(){
-        handler.postDelayed(object : Runnable {
-            override fun run() {
-                if(playerState.value == PlayerState.STATE_PLAYING){
-                    changeTime()
-                }
-                handler.postDelayed(this, TIMER_CHANGE_DELAY_MILLIS)
+        timerJob = viewModelScope.launch {
+            while (mediaPlayer.isPlaying){
+                delay(300L)
+                changeTime()
             }
-        }, TIMER_CHANGE_DELAY_MILLIS)
+        }
     }
 
     private fun changeTime(){
@@ -72,16 +77,5 @@ class AudioPlayerViewModel(
 
     override fun onCleared() {
         mediaPlayer.release()
-        handler.removeCallbacksAndMessages(null)
     }
-
-    companion object {
-        private const val TIMER_CHANGE_DELAY_MILLIS = 1000L
-//        fun getViewModelFactory(track : Track) : ViewModelProvider.Factory = viewModelFactory {
-//            initializer {
-//                AudioPlayerViewModel(track)
-//            }
-//        }
-    }
-
 }
