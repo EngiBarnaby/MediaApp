@@ -1,4 +1,4 @@
-package com.example.myyandexproject.domain.search.models
+package com.example.myyandexproject.domain.models
 
 import com.google.gson.Gson
 
@@ -12,7 +12,8 @@ data class Track(
     val releaseDate : String,
     val primaryGenreName : String,
     val country : String,
-    val previewUrl : String
+    val previewUrl : String,
+    val isFavorite : Boolean = false
 ){
     companion object {
 

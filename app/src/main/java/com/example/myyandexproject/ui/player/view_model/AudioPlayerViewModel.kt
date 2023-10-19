@@ -5,8 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myyandexproject.domain.db.FavoritesRepository
 
-import com.example.myyandexproject.domain.search.models.Track
+import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.ui.player.PlayerState
 import com.example.myyandexproject.utils.convertTime
 import kotlinx.coroutines.Job
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
     private var track: Track,
-    private val mediaPlayer: MediaPlayer
+    private val mediaPlayer: MediaPlayer,
+    private val favoritesRepository: FavoritesRepository
 ) : ViewModel() {
 
     private var timerJob: Job? = null
@@ -28,6 +30,27 @@ class AudioPlayerViewModel(
 
     init {
         preparePlayer()
+    }
+
+    fun changeFavoriteStatus(){
+        if(track.isFavorite){
+            removeFromFavorite()
+        }
+        else{
+            addToFavorite()
+        }
+    }
+
+    private fun addToFavorite(){
+        viewModelScope.launch {
+            favoritesRepository.addTrack(track)
+        }
+    }
+
+    private fun removeFromFavorite(){
+        viewModelScope.launch {
+            favoritesRepository.removeTrack(track)
+        }
     }
 
     fun startPlayer() {

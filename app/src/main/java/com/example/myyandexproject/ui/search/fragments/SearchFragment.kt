@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentSearchBinding
 import com.example.myyandexproject.domain.search.api.TrackState
-import com.example.myyandexproject.domain.search.models.Track
+import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.ui.player.activity.AudioPlayer
 import com.example.myyandexproject.ui.search.recycle_view.TrackAdapter
 import com.example.myyandexproject.ui.search.recycle_view.TrackClick

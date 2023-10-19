@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myyandexproject.R
-import com.example.myyandexproject.domain.search.models.Track
+import com.example.myyandexproject.domain.models.Track
 
 class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 

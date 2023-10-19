@@ -5,11 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myyandexproject.data.dto.Resource
-import com.example.myyandexproject.domain.search.models.Track
+import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.domain.search.api.SearchInteractor
 import com.example.myyandexproject.domain.search.api.TrackState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SearchViewModel(

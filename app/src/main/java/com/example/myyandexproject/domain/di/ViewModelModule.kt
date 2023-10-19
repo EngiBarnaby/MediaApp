@@ -1,7 +1,7 @@
 package com.example.myyandexproject.domain.di
 
 import android.media.MediaPlayer
-import com.example.myyandexproject.domain.search.models.Track
+import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.ui.media.view_models.FavoriteViewModel
 import com.example.myyandexproject.ui.media.view_models.PlaylistViewModel
 import com.example.myyandexproject.ui.player.view_model.AudioPlayerViewModel
@@ -21,7 +21,7 @@ val viewModelModule = module {
     }
 
     viewModel {(track : Track) ->
-        AudioPlayerViewModel(track, MediaPlayer())
+        AudioPlayerViewModel(track, MediaPlayer(), get())
     }
 
     viewModel {
