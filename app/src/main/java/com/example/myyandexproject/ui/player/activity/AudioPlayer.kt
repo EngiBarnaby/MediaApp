@@ -1,5 +1,6 @@
 package com.example.myyandexproject.ui.player.activity
 
+import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
@@ -74,7 +75,8 @@ class AudioPlayer : AppCompatActivity() {
         }
 
         binding.favorite.setOnClickListener {
-            viewModel.changeFavoriteStatus()
+            val isFavorite = viewModel.changeFavoriteStatus()
+            changeFavoriteColor(isFavorite)
         }
 
     }
@@ -92,10 +94,12 @@ class AudioPlayer : AppCompatActivity() {
 
     private fun changeFavoriteColor(isFavorite : Boolean){
         if(isFavorite){
-            binding.favorite.setBackgroundColor(getColor(R.color.purple_200))
+            binding.favorite.setImageResource(R.drawable.baseline_favorite_24)
+            binding.favorite.imageTintList = ColorStateList.valueOf(getColor(R.color.favorite_color))
         }
         else{
-            binding.favorite.setBackgroundColor(getColor(R.color.teal_700))
+            binding.favorite.setImageResource(R.drawable.baseline_favorite_border_24)
+            binding.favorite.imageTintList = ColorStateList.valueOf(getColor(R.color.white))
         }
     }
 

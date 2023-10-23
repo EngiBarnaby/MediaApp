@@ -64,7 +64,7 @@ class SearchViewModel(
         searchInteractor.setSearchText(EDIT_TEXT_VAL, text)
     }
 
-    private fun getInputText(): String {
+    fun getInputText(): String {
         return searchInteractor.getSearchText(EDIT_TEXT_VAL)
     }
 

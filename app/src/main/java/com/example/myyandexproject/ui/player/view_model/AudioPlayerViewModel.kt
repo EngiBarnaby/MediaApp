@@ -32,13 +32,15 @@ class AudioPlayerViewModel(
         preparePlayer()
     }
 
-    fun changeFavoriteStatus(){
+    fun changeFavoriteStatus() : Boolean{
         if(track.isFavorite){
             removeFromFavorite()
         }
         else{
             addToFavorite()
         }
+        track = track.copy(isFavorite = !track.isFavorite)
+        return track.isFavorite
     }
 
     private fun addToFavorite(){
