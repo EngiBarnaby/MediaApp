@@ -1,4 +1,4 @@
-package com.example.myyandexproject.ui.player.view_model
+package com.example.myyandexproject.ui.player.viewModel
 
 import android.media.MediaPlayer
 import androidx.lifecycle.LiveData
@@ -24,24 +24,28 @@ class AudioPlayerViewModel(
 
     private var playerState = MutableLiveData(PlayerState.STATE_DEFAULT)
     private var currentTrackTime = MutableLiveData("00:00")
+    private val isFavoriteData = MutableLiveData<Boolean>(false)
 
     fun getPlayerState() : LiveData<PlayerState> = playerState
     fun getCurrentTrackTime() : LiveData<String> = currentTrackTime
+    fun isFavorite() : LiveData<Boolean> = isFavoriteData
 
     init {
+        isFavoriteData.postValue(track.isFavorite)
         preparePlayer()
     }
 
-    fun changeFavoriteStatus() : Boolean{
-        if(track.isFavorite){
+    fun changeFavoriteStatus() {
+        if(isFavoriteData.value == true){
             removeFromFavorite()
+            isFavoriteData.postValue(false)
         }
-        else{
+        else if (isFavoriteData.value == false){
             addToFavorite()
+            isFavoriteData.postValue(true)
         }
-        track = track.copy(isFavorite = !track.isFavorite)
-        return track.isFavorite
     }
+
 
     private fun addToFavorite(){
         viewModelScope.launch {

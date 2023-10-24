@@ -1,11 +1,11 @@
-package com.example.myyandexproject.ui.media.recycle_view.favorites
+package com.example.myyandexproject.ui.media.recycleView.favorites
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myyandexproject.databinding.TrackItemBinding
 import com.example.myyandexproject.domain.models.Track
-import com.example.myyandexproject.ui.search.recycle_view.TrackClick
+import com.example.myyandexproject.ui.search.recycleView.TrackClick
 
 class FavoriteAdapter : RecyclerView.Adapter<FavoriteViewHolder>() {
 

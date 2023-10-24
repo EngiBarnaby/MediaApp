@@ -1,4 +1,4 @@
-package com.example.myyandexproject.ui.media.view_models
+package com.example.myyandexproject.ui.media.viewModels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

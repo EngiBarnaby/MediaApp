@@ -136,4 +136,8 @@
         <item name="itemIconTint">@animator/bottom_nav_item_color</item>
     </style>
 
+    <style name="PlayerIcon">
+        <item name="backgroundTint">@color/background_icon</item>
+    </style>
+
 </resources>

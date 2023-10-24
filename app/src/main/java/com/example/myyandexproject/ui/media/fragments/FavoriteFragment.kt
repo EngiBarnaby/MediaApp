@@ -11,11 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myyandexproject.databinding.FavoriteFragmentsBinding
 import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.ui.FavoritesState
-import com.example.myyandexproject.ui.media.recycle_view.favorites.FavoriteAdapter
-import com.example.myyandexproject.ui.media.view_models.FavoriteViewModel
-import com.example.myyandexproject.ui.player.activity.AudioPlayer
-import com.example.myyandexproject.ui.search.fragments.SearchFragment
-import com.example.myyandexproject.ui.search.recycle_view.TrackClick
+import com.example.myyandexproject.ui.media.recycleView.favorites.FavoriteAdapter
+import com.example.myyandexproject.ui.media.viewModels.FavoriteViewModel
+import com.example.myyandexproject.ui.player.activity.AudioPlayerActivity
+import com.example.myyandexproject.ui.search.recycleView.TrackClick
 import com.example.myyandexproject.utils.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,14 +24,6 @@ class FavoriteFragment : Fragment() {
     private val viewModel: FavoriteViewModel by viewModel()
     private val favoriteAdapter = FavoriteAdapter()
     private lateinit var onTrackClickDebounce: (Track) -> Unit
-
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 500L
-        private const val INPUT_DEBOUNCE_DELAY = 1500L
-
-        private const val TRACK_DATA = "track_data"
-        fun getInstance() = FavoriteFragment()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -87,10 +78,10 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun startMediaActivity(track : Track){
-        val audioPlayerIntent = Intent(requireContext(), AudioPlayer::class.java)
+        val audioPlayerActivityIntent = Intent(requireContext(), AudioPlayerActivity::class.java)
         val trackData = Track.createJsonFromTrack(track)
-        audioPlayerIntent.putExtra(TRACK_DATA, trackData)
-        startActivity(audioPlayerIntent)
+        audioPlayerActivityIntent.putExtra(TRACK_DATA, trackData)
+        startActivity(audioPlayerActivityIntent)
     }
 
     private fun showLoading(){
@@ -109,6 +100,14 @@ class FavoriteFragment : Fragment() {
         binding.progressBar.visibility = View.GONE
         binding.emptyFavoritePlaceholder.visibility = View.VISIBLE
         binding.trackList.visibility = View.GONE
+    }
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 500L
+        private const val INPUT_DEBOUNCE_DELAY = 1500L
+
+        private const val TRACK_DATA = "track_data"
+        fun getInstance() = FavoriteFragment()
     }
 
 }

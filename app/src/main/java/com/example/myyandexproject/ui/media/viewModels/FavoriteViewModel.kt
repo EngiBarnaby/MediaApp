@@ -1,21 +1,19 @@
-package com.example.myyandexproject.ui.media.view_models
+package com.example.myyandexproject.ui.media.viewModels
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myyandexproject.R
-import com.example.myyandexproject.domain.db.FavoritesRepository
+import com.example.myyandexproject.domain.db.FavoritesInteractor
 import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.ui.FavoritesState
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class FavoriteViewModel(
     private val context: Context,
-    private val favoritesRepository: FavoritesRepository
+    private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
 
     private val favoriteState = MutableLiveData<FavoritesState>()
@@ -29,7 +27,7 @@ class FavoriteViewModel(
     fun getFavoritesTrack() {
         renderState(FavoritesState.Loading)
         viewModelScope.launch {
-            favoritesRepository
+            favoritesInteractor
                 .favoritesTracks()
                 .collect {tracks ->
                     processResult(tracks)

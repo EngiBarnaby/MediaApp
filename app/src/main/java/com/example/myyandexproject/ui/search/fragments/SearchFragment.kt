@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +16,10 @@ import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentSearchBinding
 import com.example.myyandexproject.domain.search.api.TrackState
 import com.example.myyandexproject.domain.models.Track
-import com.example.myyandexproject.ui.player.activity.AudioPlayer
-import com.example.myyandexproject.ui.search.recycle_view.TrackAdapter
-import com.example.myyandexproject.ui.search.recycle_view.TrackClick
-import com.example.myyandexproject.ui.search.view_model.SearchViewModel
+import com.example.myyandexproject.ui.player.activity.AudioPlayerActivity
+import com.example.myyandexproject.ui.search.recycleView.TrackAdapter
+import com.example.myyandexproject.ui.search.recycleView.TrackClick
+import com.example.myyandexproject.ui.search.viewModel.SearchViewModel
 import com.example.myyandexproject.utils.debounce
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -200,10 +199,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun startMediaActivity(track : Track){
-            val audioPlayerIntent = Intent(requireContext(), AudioPlayer::class.java)
+            val audioPlayerActivityIntent = Intent(requireContext(), AudioPlayerActivity::class.java)
             val trackData = Track.createJsonFromTrack(track)
-            audioPlayerIntent.putExtra(TRACK_DATA, trackData)
-            startActivity(audioPlayerIntent)
+            audioPlayerActivityIntent.putExtra(TRACK_DATA, trackData)
+            startActivity(audioPlayerActivityIntent)
     }
 
     private fun makeRequest(){

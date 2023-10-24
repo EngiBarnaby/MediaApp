@@ -6,7 +6,7 @@ import com.example.myyandexproject.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 
 class FavoritesInteractorImpl(private val favoritesRepository: FavoritesRepository) : FavoritesInteractor {
-    override fun tracksFavorites(): Flow<List<Track>> {
+    override fun favoritesTracks(): Flow<List<Track>> {
         return favoritesRepository.favoritesTracks()
     }
 

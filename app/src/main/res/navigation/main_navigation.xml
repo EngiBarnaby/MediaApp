@@ -21,6 +21,6 @@
     </fragment>
     <activity
         android:id="@+id/audioPlayer"
-        android:name="com.example.myyandexproject.ui.player.activity.AudioPlayer"
+        android:name="com.example.myyandexproject.ui.player.activity.AudioPlayerActivity"
         android:label="AudioPlayer" />
 </navigation>

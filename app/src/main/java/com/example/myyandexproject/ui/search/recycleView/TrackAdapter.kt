@@ -1,4 +1,4 @@
-package com.example.myyandexproject.ui.search.recycle_view
+package com.example.myyandexproject.ui.search.recycleView
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

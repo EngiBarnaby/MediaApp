@@ -10,8 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentSettingsBinding
-import com.example.myyandexproject.ui.media.fragments.MainMediaFragment
-import com.example.myyandexproject.ui.settings.view_model.SettingsViewModel
+import com.example.myyandexproject.ui.settings.viewModel.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

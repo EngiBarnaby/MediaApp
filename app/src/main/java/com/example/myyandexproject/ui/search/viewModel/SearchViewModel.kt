@@ -1,4 +1,4 @@
-package com.example.myyandexproject.ui.search.view_model
+package com.example.myyandexproject.ui.search.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,6 +1,5 @@
-package com.example.myyandexproject.ui.media.recycle_view.favorites
+package com.example.myyandexproject.ui.media.recycleView.favorites
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myyandexproject.R
