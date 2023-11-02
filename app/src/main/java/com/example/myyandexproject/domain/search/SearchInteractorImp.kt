@@ -4,7 +4,7 @@ import com.example.myyandexproject.data.dto.Resource
 import com.example.myyandexproject.data.shared_preferences.SharedPreferencesClient
 import com.example.myyandexproject.domain.search.api.TrackRepository
 import com.example.myyandexproject.domain.search.api.SearchInteractor
-import com.example.myyandexproject.domain.search.models.Track
+import com.example.myyandexproject.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 
 class SearchInteractorImp(

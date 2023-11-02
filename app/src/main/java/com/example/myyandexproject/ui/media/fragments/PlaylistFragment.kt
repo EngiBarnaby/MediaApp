@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.myyandexproject.databinding.FragmentPlaylistBinding
-import com.example.myyandexproject.ui.media.view_models.PlaylistViewModel
+import com.example.myyandexproject.ui.media.viewModels.PlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment : Fragment() {

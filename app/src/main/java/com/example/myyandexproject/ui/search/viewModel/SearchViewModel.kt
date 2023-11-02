@@ -1,15 +1,14 @@
-package com.example.myyandexproject.ui.search.view_model
+package com.example.myyandexproject.ui.search.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myyandexproject.data.dto.Resource
-import com.example.myyandexproject.domain.search.models.Track
+import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.domain.search.api.SearchInteractor
 import com.example.myyandexproject.domain.search.api.TrackState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
@@ -65,7 +64,7 @@ class SearchViewModel(
         searchInteractor.setSearchText(EDIT_TEXT_VAL, text)
     }
 
-    private fun getInputText(): String {
+    fun getInputText(): String {
         return searchInteractor.getSearchText(EDIT_TEXT_VAL)
     }
 

@@ -1,4 +1,4 @@
-package com.example.myyandexproject.ui.settings.view_model
+package com.example.myyandexproject.ui.settings.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,6 +1,6 @@
 package com.example.myyandexproject.domain.search.api
 
-import com.example.myyandexproject.domain.search.models.Track
+import com.example.myyandexproject.domain.models.Track
 
 sealed interface TrackState {
 

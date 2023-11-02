@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentSearchBinding
 import com.example.myyandexproject.domain.search.api.TrackState
-import com.example.myyandexproject.domain.search.models.Track
-import com.example.myyandexproject.ui.player.activity.AudioPlayer
-import com.example.myyandexproject.ui.search.recycle_view.TrackAdapter
-import com.example.myyandexproject.ui.search.recycle_view.TrackClick
-import com.example.myyandexproject.ui.search.view_model.SearchViewModel
+import com.example.myyandexproject.domain.models.Track
+import com.example.myyandexproject.ui.player.activity.AudioPlayerActivity
+import com.example.myyandexproject.ui.search.recycleView.TrackAdapter
+import com.example.myyandexproject.ui.search.recycleView.TrackClick
+import com.example.myyandexproject.ui.search.viewModel.SearchViewModel
 import com.example.myyandexproject.utils.debounce
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -54,6 +54,13 @@ class SearchFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(viewModel.getInputText().isNotBlank()){
+            viewModel.makeRequest()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -192,10 +199,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun startMediaActivity(track : Track){
-            val audioPlayerIntent = Intent(requireContext(), AudioPlayer::class.java)
+            val audioPlayerActivityIntent = Intent(requireContext(), AudioPlayerActivity::class.java)
             val trackData = Track.createJsonFromTrack(track)
-            audioPlayerIntent.putExtra(TRACK_DATA, trackData)
-            startActivity(audioPlayerIntent)
+            audioPlayerActivityIntent.putExtra(TRACK_DATA, trackData)
+            startActivity(audioPlayerActivityIntent)
     }
 
     private fun makeRequest(){
