@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentPlaylistBinding
 import com.example.myyandexproject.ui.media.viewModels.PlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,6 +29,16 @@ class PlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.newPlaylistBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_mainMediaFragment_to_createPlaylistFragment)
+        }
+
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 

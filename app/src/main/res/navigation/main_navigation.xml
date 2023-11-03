@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
     app:startDestination="@id/mainMediaFragment">
     <fragment
         android:id="@+id/mainMediaFragment"
         android:name="com.example.myyandexproject.ui.media.fragments.MainMediaFragment"
-        android:label="MainMediaFragment" />
+        android:label="MainMediaFragment" >
+        <action
+            android:id="@+id/action_mainMediaFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.myyandexproject.ui.search.fragments.SearchFragment"
@@ -23,4 +28,8 @@
         android:id="@+id/audioPlayer"
         android:name="com.example.myyandexproject.ui.player.activity.AudioPlayerActivity"
         android:label="AudioPlayer" />
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.example.myyandexproject.ui.media.fragments.CreatePlaylistFragment"
+        android:label="CreatePlaylistFragment" />
 </navigation>
