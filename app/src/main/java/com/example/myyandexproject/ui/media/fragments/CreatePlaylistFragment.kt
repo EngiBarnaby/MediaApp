@@ -2,10 +2,15 @@ package com.example.myyandexproject.ui.media.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentCreatePlaylistBinding
@@ -35,11 +40,59 @@ class CreatePlaylistFragment : Fragment() {
 
         viewModel.getPlaylistData().observe(viewLifecycleOwner){ playlistData ->
             if(playlistData.title.isNullOrBlank()){
-                changeCreateBtnState(false)
-            }
-            else{
                 changeCreateBtnState(true)
             }
+            else{
+                changeCreateBtnState(false)
+            }
+        }
+
+        changeCreateBtnState(isEmpty = true)
+
+        viewModel.getTitle().observe(viewLifecycleOwner){
+            if(it.isEmpty()){
+                changeCreateBtnState(isEmpty = true)
+            }
+            else{
+                changeCreateBtnState(isEmpty = false)
+            }
+        }
+
+        val titleTextInputWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.setTitle(s.toString())
+            }
+        }
+
+        val descriptionTextInputWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.setDescription(s.toString())
+            }
+        }
+
+        binding.playlistTitle.addTextChangedListener(titleTextInputWatcher)
+        binding.playlistTitle.addTextChangedListener(descriptionTextInputWatcher)
+
+        binding.createPlaylistBtn.setOnClickListener {
+//            viewModel.createPlaylist()
+            Toast.makeText(requireContext(), "This is work!!!!", Toast.LENGTH_SHORT).show()
+        }
+
+        val pickMedia =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                if (uri != null) {
+                    binding.imagePicker.setImageURI(uri)
+                } else {
+                    Toast.makeText(requireContext(), "No media selected", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        binding.imagePicker.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
     }
@@ -47,11 +100,19 @@ class CreatePlaylistFragment : Fragment() {
     fun changeCreateBtnState(isEmpty : Boolean){
         if(isEmpty){
             val disableColor = ContextCompat.getColor(requireContext(), R.color.disable_btn_color)
-            binding.createPlaylistBtn.setBackgroundColor(disableColor)
+            binding.createPlaylistBtn.let {
+                it.setBackgroundColor(disableColor)
+                it.isEnabled = false
+                it.isClickable = false
+            }
         }
         else{
             val activeColor = ContextCompat.getColor(requireContext(), R.color.active_btn_color)
-            binding.createPlaylistBtn.setBackgroundColor(activeColor)
+            binding.createPlaylistBtn.let {
+                it.setBackgroundColor(activeColor)
+                it.isEnabled = true
+                it.isClickable = true
+            }
         }
     }
 
