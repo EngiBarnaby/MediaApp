@@ -85,9 +85,12 @@ class CreatePlaylistFragment : Fragment() {
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
-                    binding.imagePicker.setImageURI(uri)
+                    binding.imagePicker.visibility = View.GONE
+                    binding.userImage.setImageURI(uri)
+                    binding.userImage.visibility = View.VISIBLE
+                    viewModel.setImageUrl(uri.toString())
                 } else {
-                    Toast.makeText(requireContext(), "No media selected", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Изображение не было выбрано", Toast.LENGTH_SHORT).show()
                 }
             }
 

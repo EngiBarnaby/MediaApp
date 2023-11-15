@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myyandexproject.domain.models.Playlist
 
-class CreatePlaylistViewModel : ViewModel() {
+class CreatePlaylistViewModel() : ViewModel() {
 
     private val playlistData = MutableLiveData<Playlist>()
     private val title = MutableLiveData<String>()
@@ -31,6 +31,7 @@ class CreatePlaylistViewModel : ViewModel() {
 
     fun createPlaylist(){
         val playlist = Playlist(
+            id = null,
             title = title.value!!,
             description = description.value,
             imageUrl = imageUrl.value

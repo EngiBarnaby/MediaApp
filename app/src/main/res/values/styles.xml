@@ -149,4 +149,10 @@
         <item name="elevation">0dp</item>
         <item name="backgroundTint">#AEAFB4</item>
     </style>
+
+    <style name="roundedPlaylistImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
 </resources>
