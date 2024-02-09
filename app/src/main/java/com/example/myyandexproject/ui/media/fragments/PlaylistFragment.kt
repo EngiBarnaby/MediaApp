@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myyandexproject.R
@@ -24,7 +26,17 @@ class PlaylistFragment : Fragment() {
     private val playlistAdapter = PlaylistAdapter()
 
     companion object {
-        fun getInstance() = PlaylistFragment()
+        fun getInstance(isCreated: Boolean? = null): PlaylistFragment {
+            val fragment = PlaylistFragment()
+            fragment.arguments = createArgs(isCreated)
+            return fragment
+        }
+
+        private const val ARGS_IS_CREATED = "created"
+
+        fun createArgs(isCreated: Boolean?): Bundle =
+            bundleOf(ARGS_IS_CREATED to isCreated)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +67,12 @@ class PlaylistFragment : Fragment() {
                     showContent()
                 }
             }
+        }
+
+        val isPlaylistCreated = requireArguments()?.getBoolean(ARGS_IS_CREATED, false)
+
+        if(isPlaylistCreated){
+            Toast.makeText(requireContext(), "Новый плейлист был создан", Toast.LENGTH_SHORT)
         }
 
         binding.newPlaylistBtn.setOnClickListener {

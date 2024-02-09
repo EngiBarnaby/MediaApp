@@ -12,21 +12,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class PlaylistTrackRepositoryImpl(
-//    private val appDatabase: AppDatabase,
-//    private val playlistTrackDbConvertor: PlaylistTrackConverter
+    private val appDatabase: AppDatabase,
+    private val playlistTrackDbConvertor: PlaylistTrackConverter
 ) : PlaylistTracksRepository {
     override fun getPlaylistTracks(): Flow<List<PlaylistTrack>> = flow{
-//        val playlistTracks = appDatabase.playlistTracks().getPlaylistTracks()
-//        emit(convertFromPlaylistTrackEntity(playlistTracks))
+        val playlistTracks = appDatabase.playlistTracks().getPlaylistTracks()
+        emit(convertFromPlaylistTrackEntity(playlistTracks))
     }
 
     override suspend fun addTrackToPlaylist(track: PlaylistTrack) {
-//        appDatabase.playlistTracks().insertPlaylistTrack(playlistTrackDbConvertor.map(track))
+        appDatabase.playlistTracks().insertPlaylistTrack(playlistTrackDbConvertor.map(track))
     }
 
     private fun convertFromPlaylistTrackEntity(tracks : List<PlaylistTrackEntity>) : List<PlaylistTrack> {
-//        return tracks.map { track -> playlistTrackDbConvertor.map(track) }
-        return emptyList()
+        return tracks.map { track -> playlistTrackDbConvertor.map(track) }
     }
 
 }

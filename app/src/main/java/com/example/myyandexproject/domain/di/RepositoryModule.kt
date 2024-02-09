@@ -27,7 +27,7 @@ val repositoryModule = module {
     }
 
     single<PlaylistTracksRepository> {
-        PlaylistTrackRepositoryImpl()
+        PlaylistTrackRepositoryImpl(get(), get())
     }
 
     factory {

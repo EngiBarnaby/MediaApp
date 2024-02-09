@@ -33,4 +33,8 @@
         android:name="com.example.myyandexproject.ui.test.TestFragment"
         android:label="TestFragment"
         tools:layout="@layout/fragment_test"/>
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.example.myyandexproject.ui.media.fragments.PlaylistFragment"
+        android:label="PlaylistFragment" />
 </navigation>

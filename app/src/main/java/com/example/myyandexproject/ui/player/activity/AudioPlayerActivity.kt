@@ -1,8 +1,9 @@
 package com.example.myyandexproject.ui.player.activity
 
 import android.content.res.ColorStateList
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -90,8 +91,14 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         playlistAdapter.setTrackClickListener(object : PlaylistVerticalClick {
             override fun onClick(playlist: Playlist) {
-                viewModel.addTrackInPlaylist(track, playlist)
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                if(playlist.idList.contains(track.trackId)){
+                    Toast.makeText(this@AudioPlayerActivity, "Трек уже в плейлисте", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    viewModel.addTrackInPlaylist(track, playlist)
+                    Toast.makeText(this@AudioPlayerActivity, "Трек ${track.trackName} добавлен в плейлисте", Toast.LENGTH_SHORT).show()
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                }
             }
         })
 

@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentCreatePlaylistBinding
 import com.example.myyandexproject.ui.media.viewModels.CreatePlaylistViewModel
@@ -87,9 +88,13 @@ class CreatePlaylistFragment : Fragment() {
         binding.playlistTitle.addTextChangedListener(titleTextInputWatcher)
         binding.playlistTitle.addTextChangedListener(descriptionTextInputWatcher)
 
+        binding.btnBack.setOnClickListener{
+            findNavController().navigateUp()
+        }
+
         binding.createPlaylistBtn.setOnClickListener {
             viewModel.createPlaylist()
-            requireActivity().supportFragmentManager.popBackStack()
+            findNavController().navigate(R.id.playlistFragment, PlaylistFragment.createArgs(true))
         }
 
         val pickMedia =

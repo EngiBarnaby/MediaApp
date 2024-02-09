@@ -35,6 +35,7 @@ class AudioPlayerViewModel(
     private var currentTrackTime = MutableLiveData("00:00")
     private val isFavoriteData = MutableLiveData<Boolean>(false)
     private val playListsState = MutableLiveData<PlaylistsState>()
+    private val playListTracks = MutableLiveData<List<PlaylistTrack>>()
 
     fun getPlayerState() : LiveData<PlayerState> = playerState
     fun getCurrentTrackTime() : LiveData<String> = currentTrackTime
@@ -46,6 +47,7 @@ class AudioPlayerViewModel(
         isFavoriteData.postValue(track.isFavorite)
         preparePlayer()
         fetchPlayList()
+        fetchPlaylistTracks()
     }
 
     fun changeFavoriteStatus() {
@@ -61,7 +63,7 @@ class AudioPlayerViewModel(
 
     fun addTrackInPlaylist(track: Track, playlist : Playlist){
         val playlistTrack = PlaylistTrack(
-             trackId=track.trackId,
+            trackId=track.trackId,
             trackName=track.trackName,
             artistName=track.artistName,
             trackTimeMillis=track.trackTimeMillis,
@@ -72,12 +74,26 @@ class AudioPlayerViewModel(
             country=track.country,
             previewUrl=track.previewUrl
         )
-        viewModelScope.launch {
-            playlistTracksRepository.addTrackToPlaylist(playlistTrack)
+
+        val testList = playListTracks.value
+
+        if (!playListTracks.value?.contains(playlistTrack)!!){
+            viewModelScope.launch {
+                playlistTracksRepository.addTrackToPlaylist(playlistTrack)
+            }
         }
 
         viewModelScope.launch {
             playlistsRepository.addTrackToPlaylist(playlist.id!!, track.trackId)
+        }
+    }
+
+    private fun fetchPlaylistTracks(){
+        viewModelScope.launch {
+             playlistTracksRepository.getPlaylistTracks()
+                .collect(){
+                    playListTracks.value = it
+                }
         }
     }
 

@@ -7,7 +7,14 @@ class IdListConverter {
     @TypeConverter
     fun fromString(value: String): List<Int> {
         return if(value.isNotBlank()){
-            value.split(",").map { it.toInt() }
+            if(value.first() == ','){
+                val newValue = value.substring(1)
+                newValue.split(",").map { it.toInt() }
+            }
+            else{
+                value.split(",").map { it.toInt() }
+            }
+
         } else{
             emptyList<Int>()
         }
@@ -15,6 +22,7 @@ class IdListConverter {
 
     @TypeConverter
     fun fromList(list: List<Int>): String {
-        return list.joinToString(",")
+        val stringIds = list.joinToString(",")
+        return stringIds
     }
 }
