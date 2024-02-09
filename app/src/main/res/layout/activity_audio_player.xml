@@ -238,6 +238,7 @@
         android:paddingHorizontal="16dp"
         app:behavior_hideable="true"
         app:behavior_peekHeight="240dp"
+        style="@style/PlayerSheet"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <TextView

@@ -11,6 +11,10 @@
         <action
             android:id="@+id/action_mainMediaFragment_to_createPlaylistFragment"
             app:destination="@id/createPlaylistFragment" />
+        <argument
+            android:name="ARGS_IS_CREATED"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

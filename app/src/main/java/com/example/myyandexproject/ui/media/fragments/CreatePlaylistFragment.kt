@@ -94,7 +94,7 @@ class CreatePlaylistFragment : Fragment() {
 
         binding.createPlaylistBtn.setOnClickListener {
             viewModel.createPlaylist()
-            findNavController().navigate(R.id.playlistFragment, PlaylistFragment.createArgs(true))
+            findNavController().navigate(R.id.mainMediaFragment, MainMediaFragment.createArgs(true))
         }
 
         val pickMedia =
