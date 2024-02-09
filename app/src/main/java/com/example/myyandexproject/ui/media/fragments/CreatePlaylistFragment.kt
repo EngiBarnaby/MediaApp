@@ -1,9 +1,16 @@
 package com.example.myyandexproject.ui.media.fragments
 
 import android.content.Context
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +23,9 @@ import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentCreatePlaylistBinding
 import com.example.myyandexproject.ui.media.viewModels.CreatePlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.getScopeName
+import java.io.File
+import java.io.FileOutputStream
 
 class CreatePlaylistFragment : Fragment() {
 
@@ -78,8 +88,8 @@ class CreatePlaylistFragment : Fragment() {
         binding.playlistTitle.addTextChangedListener(descriptionTextInputWatcher)
 
         binding.createPlaylistBtn.setOnClickListener {
-//            viewModel.createPlaylist()
-            Toast.makeText(requireContext(), "This is work!!!!", Toast.LENGTH_SHORT).show()
+            viewModel.createPlaylist()
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         val pickMedia =
@@ -88,7 +98,9 @@ class CreatePlaylistFragment : Fragment() {
                     binding.imagePicker.visibility = View.GONE
                     binding.userImage.setImageURI(uri)
                     binding.userImage.visibility = View.VISIBLE
-                    viewModel.setImageUrl(uri.toString())
+                    val imagePath = saveFileToInternalStorage(uri)
+                    Log.i("myImagePath", imagePath)
+                    viewModel.setImageUrl(imagePath)
                 } else {
                     Toast.makeText(requireContext(), "Изображение не было выбрано", Toast.LENGTH_SHORT).show()
                 }
@@ -117,6 +129,43 @@ class CreatePlaylistFragment : Fragment() {
                 it.isClickable = true
             }
         }
+    }
+
+    private fun saveFileToInternalStorage(uri: Uri) : String {
+            val inputStream = requireContext().contentResolver.openInputStream(uri)
+            val fileName = getFileNameFromUri(uri)
+            val fileOutputStream = requireContext().openFileOutput(fileName, Context.MODE_PRIVATE)
+
+            BitmapFactory
+                .decodeStream(inputStream)
+                .compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+            inputStream?.close()
+            fileOutputStream?.close()
+            val savedFile = requireContext().getFileStreamPath(fileName)
+            if (savedFile != null) {
+                return savedFile.absolutePath
+            }
+            return "unknown"
+    }
+
+    private fun getFileNameFromUri(uri: Uri): String? {
+        var fileName: String? = null
+        val contentResolver = requireContext().contentResolver
+
+        val cursor: Cursor? = contentResolver.query(uri, null, null, null, null)
+
+        try {
+            cursor?.let {
+                if (it.moveToFirst()) {
+                    val fileNameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    fileName = it.getString(fileNameIndex)
+                }
+            }
+        } finally {
+            cursor?.close()
+        }
+
+        return fileName
     }
 
     companion object {

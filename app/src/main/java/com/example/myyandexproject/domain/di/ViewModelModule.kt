@@ -23,7 +23,7 @@ val viewModelModule = module {
     }
 
     viewModel {(track : Track) ->
-        AudioPlayerViewModel(track, MediaPlayer(), get())
+        AudioPlayerViewModel(track, MediaPlayer(), get(), get(), get())
     }
 
     viewModel {
@@ -31,11 +31,11 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PlaylistViewModel()
+        PlaylistViewModel(get())
     }
 
     viewModel {
-        CreatePlaylistViewModel()
+        CreatePlaylistViewModel(get())
     }
 
 }

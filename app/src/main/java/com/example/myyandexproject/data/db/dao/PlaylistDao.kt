@@ -15,4 +15,7 @@ interface PlaylistDao {
     @Query("SELECT *  FROM playlist_table ORDER BY id DESC")
     suspend fun getPlaylists() : List<PlaylistEntity>
 
+    @Query("UPDATE playlist_table SET idList = idList || :newId, tracksCount = tracksCount + 1 WHERE id = :playlistId")
+    suspend fun addTrackIdToPlaylist(playlistId: Int, newId: Int)
+
 }

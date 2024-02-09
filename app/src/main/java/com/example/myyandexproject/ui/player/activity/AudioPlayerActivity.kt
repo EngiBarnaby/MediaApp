@@ -3,17 +3,24 @@ package com.example.myyandexproject.ui.player.activity
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.ActivityAudioPlayerBinding
+import com.example.myyandexproject.domain.models.Playlist
 import com.example.myyandexproject.domain.models.Track
+import com.example.myyandexproject.ui.PlaylistsState
 import com.example.myyandexproject.ui.player.viewModel.AudioPlayerViewModel
 import com.example.myyandexproject.utils.convertTime
 import com.example.myyandexproject.utils.getBigImageUrl
 import com.example.myyandexproject.utils.getYearFromReleaseDate
 import com.example.myyandexproject.ui.player.PlayerState
+import com.example.myyandexproject.ui.player.recycleView.PlaylistVerticalAdapter
+import com.example.myyandexproject.ui.player.recycleView.PlaylistVerticalClick
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -27,6 +34,8 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityAudioPlayerBinding
     private lateinit var track : Track
+    private lateinit var bottomSheet : ConstraintLayout
+    private val playlistAdapter = PlaylistVerticalAdapter()
 
     companion object {
         private const val TRACK_DATA = "track_data"
@@ -39,6 +48,10 @@ class AudioPlayerActivity : AppCompatActivity() {
         track = getTrackFromBundle()
         setTrackData(track)
 
+        bottomSheet = binding.bottomSheet
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         viewModel.getPlayerState().observe(this){ playerState ->
             when(playerState){
@@ -55,6 +68,15 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.getPlayListsState().observe(this){ playlistsState ->
+            when(playlistsState){
+                is PlaylistsState.Content -> {
+                    playlistAdapter.playlists = playlistsState.playlists
+                    playlistAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+
         viewModel.isFavorite().observe(this) {
             changeFavoriteColor(it)
         }
@@ -62,6 +84,17 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.getCurrentTrackTime().observe(this){ currentTime ->
             binding.currentDuration.text = currentTime
         }
+
+        binding.playlists.layoutManager = LinearLayoutManager(this)
+        binding.playlists.adapter = playlistAdapter
+
+        playlistAdapter.setTrackClickListener(object : PlaylistVerticalClick {
+            override fun onClick(playlist: Playlist) {
+                viewModel.addTrackInPlaylist(track, playlist)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+        })
+
 
         binding.btnBack.setOnClickListener {
             super.onBackPressed()
@@ -80,6 +113,14 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         binding.favorite.setOnClickListener {
             viewModel.changeFavoriteStatus()
+        }
+
+        binding.playlist.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        }
+
+        binding.newPlaylistBtn.setOnClickListener {
+
         }
 
     }

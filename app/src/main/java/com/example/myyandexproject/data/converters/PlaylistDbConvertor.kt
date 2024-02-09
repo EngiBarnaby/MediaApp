@@ -10,7 +10,9 @@ class PlaylistDbConvertor {
             id = playlist.id,
             title = playlist.title,
             description = playlist.description,
-            imageUrl = playlist.imageUrl
+            imageUrl = playlist.imageUrl,
+            tracksCount = playlist.tracksCount,
+            idList = playlist.idList
         )
     }
 
@@ -19,7 +21,9 @@ class PlaylistDbConvertor {
             id = playlistEntity.id,
             title = playlistEntity.title,
             description = playlistEntity.description,
-            imageUrl = playlistEntity.imageUrl
+            imageUrl = playlistEntity.imageUrl,
+            tracksCount = playlistEntity.tracksCount,
+            idList = playlistEntity.idList
         )
     }
 

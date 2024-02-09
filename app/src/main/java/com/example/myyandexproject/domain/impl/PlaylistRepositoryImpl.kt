@@ -1,4 +1,4 @@
-package com.example.myyandexproject
+package com.example.myyandexproject.domain.impl
 
 import com.example.myyandexproject.data.converters.PlaylistDbConvertor
 import com.example.myyandexproject.data.db.AppDatabase
@@ -19,6 +19,10 @@ class PlaylistRepositoryImpl(
 
     override suspend fun addPlaylist(playlist: Playlist) {
         appDatabase.playlistDao().insertPlaylist(convertToPlaylistEntity(playlist))
+    }
+
+    override suspend fun addTrackToPlaylist(playlistId: Int, playlistTrackId: Int) {
+        appDatabase.playlistDao().addTrackIdToPlaylist(playlistId, playlistTrackId)
     }
 
     fun convertFromPlaylistsEntity(playlists : List<PlaylistEntity>) : List<Playlist> {

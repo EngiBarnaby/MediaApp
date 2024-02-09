@@ -19,11 +19,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.myyandexproject.ui.settings.fragments.SettingsFragment"
-        android:label="SettingsFragment" >
-        <action
-            android:id="@+id/action_settingsFragment_to_audioPlayer"
-            app:destination="@id/audioPlayer" />
-    </fragment>
+        android:label="SettingsFragment" />
     <activity
         android:id="@+id/audioPlayer"
         android:name="com.example.myyandexproject.ui.player.activity.AudioPlayerActivity"
@@ -32,4 +28,9 @@
         android:id="@+id/createPlaylistFragment"
         android:name="com.example.myyandexproject.ui.media.fragments.CreatePlaylistFragment"
         android:label="CreatePlaylistFragment" />
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="com.example.myyandexproject.ui.test.TestFragment"
+        android:label="TestFragment"
+        tools:layout="@layout/fragment_test"/>
 </navigation>
