@@ -1,19 +1,22 @@
 package com.example.myyandexproject.ui.media.viewModels
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myyandexproject.R
 import com.example.myyandexproject.domain.db.PlaylistsRepository
 import com.example.myyandexproject.domain.models.Playlist
-import com.example.myyandexproject.ui.FavoritesState
 import com.example.myyandexproject.ui.PlaylistsState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class PlaylistViewModel(private val playlistsRepository: PlaylistsRepository) : ViewModel() {
+class PlaylistViewModel(
+    private val context: Context,
+    private val playlistsRepository: PlaylistsRepository
+) : ViewModel() {
 
     private val playListsState = MutableLiveData<PlaylistsState>()
 
@@ -37,7 +40,7 @@ class PlaylistViewModel(private val playlistsRepository: PlaylistsRepository) : 
 
     private fun processResult(playlists : List<Playlist>){
         if(playlists.isEmpty()){
-            renderState(PlaylistsState.Empty("Вы не создали ни одного плейлиста"))
+            renderState(PlaylistsState.Empty(context.getString(R.string.playlists_is_empty)))
         }
         else{
             renderState(PlaylistsState.Content(playlists))

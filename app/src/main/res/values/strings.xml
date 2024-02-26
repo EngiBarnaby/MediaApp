@@ -36,10 +36,10 @@
     <string name="initial_time">00:00</string>
     <string name="error_extraction_track">Не удалось получить нужный трек.</string>
     <string name="return_to_search">Вернутся к поиску</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="media_library_title">Медиатека</string>
     <string name="media_library_is_empty">Ваша медиатека пуста</string>
+    <string name="playlists_is_empty">"Вы не создали ни одного плейлиста"</string>
     <string name="new_playlist_btn">Новый плейлист</string>
     <string name="no_playlist_yet">Вы не создали ни одного плейлиста</string>
     <string name="table_name_favorite">Избранные треки</string>

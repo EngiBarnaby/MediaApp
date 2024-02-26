@@ -6,11 +6,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,10 +23,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentCreatePlaylistBinding
 import com.example.myyandexproject.ui.media.viewModels.CreatePlaylistViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.component.getScopeName
-import java.io.File
-import java.io.FileOutputStream
 
 class CreatePlaylistFragment : Fragment() {
 
@@ -89,8 +87,18 @@ class CreatePlaylistFragment : Fragment() {
         binding.playlistTitle.addTextChangedListener(descriptionTextInputWatcher)
 
         binding.btnBack.setOnClickListener{
-            findNavController().navigateUp()
+            if (
+                viewModel.getTitle().value?.isNotEmpty() == true ||
+                viewModel.getImageUrl().value?.isNotEmpty() == true ||
+                viewModel.getDescription().value?.isNotEmpty() == true
+            ){
+                showModal()
+            }
+            else{
+                findNavController().navigateUp()
+            }
         }
+
 
         binding.createPlaylistBtn.setOnClickListener {
             viewModel.createPlaylist()
@@ -133,6 +141,29 @@ class CreatePlaylistFragment : Fragment() {
                 it.isEnabled = true
                 it.isClickable = true
             }
+        }
+    }
+
+    private fun showModal() : Boolean {
+        if(
+            viewModel.getTitle().value?.isNotEmpty() == true ||
+            viewModel.getImageUrl().value?.isNotEmpty() == true ||
+            viewModel.getDescription().value?.isNotEmpty() == true
+        ){
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Завершить создание плейлиста?")
+                .setMessage("Все несохраненные данные будут потеряны")
+                .setNeutralButton("Отмена") { dialog, which ->
+                    dialog.cancel()
+                }
+                .setPositiveButton("Завершить") { dialog, which ->
+                    findNavController().navigateUp()
+                }
+                .show()
+            return true
+        }
+        else{
+            return false
         }
     }
 

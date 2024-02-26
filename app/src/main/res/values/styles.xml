@@ -107,7 +107,7 @@
     </style>
     <style name="roundedImageView">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">5dp</item>
+        <item name="cornerSize">12dp</item>
     </style>
     <style name="searchInput">
         <item name="android:textColor">@color/main_background_night</item>
@@ -165,6 +165,11 @@
 
     <style name="PlayerSheet">
         <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+    <style name="InputStyle">
+        <item name="android:background">@drawable/input_border</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
 </resources>

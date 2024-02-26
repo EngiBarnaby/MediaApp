@@ -54,7 +54,7 @@ class CreatePlaylistViewModel(
     fun getPlaylistData() : LiveData<Playlist> = playlistData
 
     init {
-        Log.i("my_test", "It's fucking work!")
+
     }
 
 }

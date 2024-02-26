@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -14,6 +15,7 @@ import com.example.myyandexproject.databinding.ActivityAudioPlayerBinding
 import com.example.myyandexproject.domain.models.Playlist
 import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.ui.PlaylistsState
+import com.example.myyandexproject.ui.media.fragments.CreatePlaylistFragment
 import com.example.myyandexproject.ui.player.viewModel.AudioPlayerViewModel
 import com.example.myyandexproject.utils.convertTime
 import com.example.myyandexproject.utils.getBigImageUrl
@@ -92,11 +94,11 @@ class AudioPlayerActivity : AppCompatActivity() {
         playlistAdapter.setTrackClickListener(object : PlaylistVerticalClick {
             override fun onClick(playlist: Playlist) {
                 if(playlist.idList.contains(track.trackId)){
-                    Toast.makeText(this@AudioPlayerActivity, "Трек уже в плейлисте", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AudioPlayerActivity, "Трек уже в плейлисте ${playlist.title}", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     viewModel.addTrackInPlaylist(track, playlist)
-                    Toast.makeText(this@AudioPlayerActivity, "Трек ${track.trackName} добавлен в плейлисте", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AudioPlayerActivity, "Добавлено в плейлист ${playlist.title}", Toast.LENGTH_SHORT).show()
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 }
             }
@@ -127,7 +129,11 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
 
         binding.newPlaylistBtn.setOnClickListener {
-
+            val fragmentManager = supportFragmentManager
+            val transaction = fragmentManager.beginTransaction()
+            transaction
+                .replace(R.id.container_view, CreatePlaylistFragment())
+                .commit()
         }
 
     }

@@ -1,7 +1,9 @@
 package com.example.myyandexproject.domain.di
 
+import com.example.myyandexproject.domain.db.AudioPlayerInteractor
 import com.example.myyandexproject.domain.db.FavoritesInteractor
 import com.example.myyandexproject.domain.db.PlaylistTrackInteractor
+import com.example.myyandexproject.domain.impl.AudioPlayerInteractorImpl
 import com.example.myyandexproject.domain.impl.FavoritesInteractorImpl
 import com.example.myyandexproject.domain.impl.PlaylistTrackInteractorImpl
 import com.example.myyandexproject.domain.search.SearchInteractorImp
@@ -26,6 +28,10 @@ val interactorModule = module {
 
     single<PlaylistTrackInteractor> {
         PlaylistTrackInteractorImpl(get())
+    }
+
+    single<AudioPlayerInteractor> {
+        AudioPlayerInteractorImpl(get(), get(), get())
     }
 
 }

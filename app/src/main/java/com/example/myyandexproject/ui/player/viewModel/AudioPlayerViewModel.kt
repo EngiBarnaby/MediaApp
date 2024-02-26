@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myyandexproject.domain.db.AudioPlayerInteractor
 import com.example.myyandexproject.domain.db.FavoritesRepository
 import com.example.myyandexproject.domain.db.PlaylistTracksRepository
 import com.example.myyandexproject.domain.db.PlaylistsRepository
@@ -24,9 +25,7 @@ import kotlinx.coroutines.launch
 class AudioPlayerViewModel(
     private var track: Track,
     private val mediaPlayer: MediaPlayer,
-    private val favoritesRepository: FavoritesRepository,
-    private val playlistsRepository: PlaylistsRepository,
-    private val playlistTracksRepository: PlaylistTracksRepository
+    private val audioPlayerInteractor: AudioPlayerInteractor
 ) : ViewModel() {
 
     private var timerJob: Job? = null
@@ -79,18 +78,18 @@ class AudioPlayerViewModel(
 
         if (!playListTracks.value?.contains(playlistTrack)!!){
             viewModelScope.launch {
-                playlistTracksRepository.addTrackToPlaylist(playlistTrack)
+                audioPlayerInteractor.addTrackToPlaylist(playlistTrack)
             }
         }
 
         viewModelScope.launch {
-            playlistsRepository.addTrackToPlaylist(playlist.id!!, track.trackId)
+            audioPlayerInteractor.addTrackToPlaylist(playlist.id!!, track.trackId)
         }
     }
 
     private fun fetchPlaylistTracks(){
         viewModelScope.launch {
-             playlistTracksRepository.getPlaylistTracks()
+            audioPlayerInteractor.getPlaylistTracks()
                 .collect(){
                     playListTracks.value = it
                 }
@@ -99,13 +98,13 @@ class AudioPlayerViewModel(
 
     private fun addToFavorite(){
         viewModelScope.launch {
-            favoritesRepository.addTrack(track)
+            audioPlayerInteractor.addTrack(track)
         }
     }
 
     private fun removeFromFavorite(){
         viewModelScope.launch {
-            favoritesRepository.removeTrack(track)
+            audioPlayerInteractor.removeTrack(track)
         }
     }
 
@@ -129,7 +128,7 @@ class AudioPlayerViewModel(
     fun fetchPlayList(){
 
         viewModelScope.launch(Dispatchers.IO){
-            playlistsRepository
+            audioPlayerInteractor
                 .getPlaylists()
                 .collect { playlists ->
                     processResult(playlists)
