@@ -42,7 +42,7 @@ class MainMediaFragment : Fragment() {
         val isPlaylistCreated = requireArguments()?.getBoolean(ARGS_IS_CREATED, false)
 
         if(isPlaylistCreated){
-            Toast.makeText(requireContext(), "Новый плейлист был создан", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "${requireContext().getString(R.string.new_playlist_has_been_created)}", Toast.LENGTH_SHORT).show()
         }
 
 

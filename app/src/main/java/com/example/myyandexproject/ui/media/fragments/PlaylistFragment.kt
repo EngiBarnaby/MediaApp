@@ -34,7 +34,7 @@ class PlaylistFragment : Fragment() {
 
         private const val ARGS_IS_CREATED = "created"
 
-        fun createArgs(isCreated: Boolean?): Bundle =
+        private fun createArgs(isCreated: Boolean?): Bundle =
             bundleOf(ARGS_IS_CREATED to isCreated)
 
     }
@@ -69,10 +69,11 @@ class PlaylistFragment : Fragment() {
             }
         }
 
-        val isPlaylistCreated = requireArguments()?.getBoolean(ARGS_IS_CREATED, false)
+        val isPlaylistCreated = requireArguments().getBoolean(ARGS_IS_CREATED, false)
 
         if(isPlaylistCreated){
-            Toast.makeText(requireContext(), "Новый плейлист был создан", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(),
+                requireContext().getString(R.string.new_playlist_has_been_created), Toast.LENGTH_SHORT).show()
         }
 
         binding.newPlaylistBtn.setOnClickListener {
@@ -81,7 +82,7 @@ class PlaylistFragment : Fragment() {
 
         playlistAdapter.setTrackClickListener(object : PlaylistClick {
             override fun onClick(playlist: Playlist) {
-                Log.i("test13", "Click to playlist is work")
+                Log.i("test", "Click to playlist is work")
             }
         })
 

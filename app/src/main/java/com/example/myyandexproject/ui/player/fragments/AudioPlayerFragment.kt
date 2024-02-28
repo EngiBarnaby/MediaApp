@@ -1,33 +1,35 @@
-package com.example.myyandexproject.ui.player.activity
+package com.example.myyandexproject.ui.player.fragments
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.myyandexproject.R
-import com.example.myyandexproject.databinding.ActivityAudioPlayerBinding
+import com.example.myyandexproject.databinding.FragmentAudioPlayerBinding
 import com.example.myyandexproject.domain.models.Playlist
 import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.ui.PlaylistsState
-import com.example.myyandexproject.ui.media.fragments.CreatePlaylistFragment
+import com.example.myyandexproject.ui.player.PlayerState
+import com.example.myyandexproject.ui.player.recycleView.PlaylistVerticalAdapter
+import com.example.myyandexproject.ui.player.recycleView.PlaylistVerticalClick
 import com.example.myyandexproject.ui.player.viewModel.AudioPlayerViewModel
 import com.example.myyandexproject.utils.convertTime
 import com.example.myyandexproject.utils.getBigImageUrl
 import com.example.myyandexproject.utils.getYearFromReleaseDate
-import com.example.myyandexproject.ui.player.PlayerState
-import com.example.myyandexproject.ui.player.recycleView.PlaylistVerticalAdapter
-import com.example.myyandexproject.ui.player.recycleView.PlaylistVerticalClick
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class AudioPlayerActivity : AppCompatActivity() {
+class AudioPlayerFragment : Fragment() {
 
     private val viewModel: AudioPlayerViewModel by viewModel {
         parametersOf(
@@ -35,7 +37,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         )
     }
 
-    private lateinit var binding : ActivityAudioPlayerBinding
+    private var _binding : FragmentAudioPlayerBinding? = null
+    private val binding get() = _binding!!
     private lateinit var track : Track
     private lateinit var bottomSheet : ConstraintLayout
     private val playlistAdapter = PlaylistVerticalAdapter()
@@ -44,10 +47,16 @@ class AudioPlayerActivity : AppCompatActivity() {
         private const val TRACK_DATA = "track_data"
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         track = getTrackFromBundle()
         setTrackData(track)
 
@@ -56,7 +65,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-        viewModel.getPlayerState().observe(this){ playerState ->
+        viewModel.getPlayerState().observe(viewLifecycleOwner){ playerState ->
             when(playerState){
                 PlayerState.STATE_DEFAULT, PlayerState.STATE_PAUSED -> {
                     binding.playerBtn.setIconResource(R.drawable.baseline_play_arrow_24)
@@ -71,7 +80,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.getPlayListsState().observe(this){ playlistsState ->
+        viewModel.getPlayListsState().observe(viewLifecycleOwner){ playlistsState ->
             when(playlistsState){
                 is PlaylistsState.Content -> {
                     playlistAdapter.playlists = playlistsState.playlists
@@ -80,25 +89,25 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.isFavorite().observe(this) {
+        viewModel.isFavorite().observe(viewLifecycleOwner) {
             changeFavoriteColor(it)
         }
 
-        viewModel.getCurrentTrackTime().observe(this){ currentTime ->
+        viewModel.getCurrentTrackTime().observe(viewLifecycleOwner){ currentTime ->
             binding.currentDuration.text = currentTime
         }
 
-        binding.playlists.layoutManager = LinearLayoutManager(this)
+        binding.playlists.layoutManager = LinearLayoutManager(requireContext())
         binding.playlists.adapter = playlistAdapter
 
         playlistAdapter.setTrackClickListener(object : PlaylistVerticalClick {
             override fun onClick(playlist: Playlist) {
                 if(playlist.idList.contains(track.trackId)){
-                    Toast.makeText(this@AudioPlayerActivity, "Трек уже в плейлисте ${playlist.title}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "${requireContext().getString(R.string.track_already_in_playlist)} ${playlist.title}", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     viewModel.addTrackInPlaylist(track, playlist)
-                    Toast.makeText(this@AudioPlayerActivity, "Добавлено в плейлист ${playlist.title}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "${requireContext().getString(R.string.track_added_to_playlist)} ${playlist.title}", Toast.LENGTH_SHORT).show()
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 }
             }
@@ -106,7 +115,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
 
         binding.btnBack.setOnClickListener {
-            super.onBackPressed()
+            findNavController().navigateUp()
         }
 
         binding.playerBtn.setOnClickListener {
@@ -129,13 +138,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
 
         binding.newPlaylistBtn.setOnClickListener {
-            val fragmentManager = supportFragmentManager
-            val transaction = fragmentManager.beginTransaction()
-            transaction
-                .replace(R.id.container_view, CreatePlaylistFragment())
-                .commit()
+            findNavController().navigate(R.id.action_audioPlayerFragment_to_createPlaylistFragment)
         }
-
     }
 
     override fun onPause() {
@@ -144,7 +148,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun getTrackFromBundle() : Track {
-        val bundle = intent.extras
+        val bundle = arguments
         val trackData = bundle?.getString(TRACK_DATA)
         return Track.createTrackFromJson(trackData!!)
     }
@@ -152,11 +156,11 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun changeFavoriteColor(isFavorite : Boolean){
         if(isFavorite){
             binding.favorite.setImageResource(R.drawable.baseline_favorite_24)
-            binding.favorite.imageTintList = ColorStateList.valueOf(getColor(R.color.favorite_color))
+            binding.favorite.imageTintList = ColorStateList.valueOf(requireContext().getColor(R.color.favorite_color))
         }
         else{
             binding.favorite.setImageResource(R.drawable.baseline_favorite_border_24)
-            binding.favorite.imageTintList = ColorStateList.valueOf(getColor(R.color.white))
+            binding.favorite.imageTintList = ColorStateList.valueOf(requireContext().getColor(R.color.white))
         }
     }
 
@@ -179,4 +183,5 @@ class AudioPlayerActivity : AppCompatActivity() {
             .apply(RequestOptions.bitmapTransform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.round_image))))
             .into(binding.imageView)
     }
+
 }

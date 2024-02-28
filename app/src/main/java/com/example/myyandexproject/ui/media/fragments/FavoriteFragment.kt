@@ -7,13 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FavoriteFragmentsBinding
 import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.ui.FavoritesState
 import com.example.myyandexproject.ui.media.recycleView.favorites.FavoriteAdapter
 import com.example.myyandexproject.ui.media.viewModels.FavoriteViewModel
-import com.example.myyandexproject.ui.player.activity.AudioPlayerActivity
 import com.example.myyandexproject.ui.search.recycleView.TrackClick
 import com.example.myyandexproject.utils.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -78,10 +79,10 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun startMediaActivity(track : Track){
-        val audioPlayerActivityIntent = Intent(requireContext(), AudioPlayerActivity::class.java)
         val trackData = Track.createJsonFromTrack(track)
-        audioPlayerActivityIntent.putExtra(TRACK_DATA, trackData)
-        startActivity(audioPlayerActivityIntent)
+        val bundle = Bundle()
+        bundle.putString(TRACK_DATA, trackData)
+        findNavController().navigate(R.id.action_favoriteFragment_to_audioPlayerFragment, bundle)
     }
 
     private fun showLoading(){

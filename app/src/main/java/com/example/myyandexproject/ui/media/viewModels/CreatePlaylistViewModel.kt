@@ -5,13 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myyandexproject.domain.db.PlaylistInteractor
 import com.example.myyandexproject.domain.db.PlaylistsRepository
 import com.example.myyandexproject.domain.models.Playlist
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 
 class CreatePlaylistViewModel(
-    private val playlistsRepository: PlaylistsRepository
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private val playlistData = MutableLiveData<Playlist>()
@@ -46,7 +47,7 @@ class CreatePlaylistViewModel(
         )
 
         viewModelScope.launch(Dispatchers.IO){
-            playlistsRepository.addPlaylist(playlist)
+            playlistInteractor.addPlaylist(playlist)
         }
 
     }

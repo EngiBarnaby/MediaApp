@@ -34,4 +34,7 @@ val interactorModule = module {
         AudioPlayerInteractorImpl(get(), get(), get())
     }
 
+    single<PlaylistTrackInteractor> {
+        PlaylistTrackInteractorImpl(get())
+    }
 }

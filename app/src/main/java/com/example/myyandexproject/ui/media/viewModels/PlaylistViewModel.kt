@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myyandexproject.R
+import com.example.myyandexproject.domain.db.PlaylistInteractor
 import com.example.myyandexproject.domain.db.PlaylistsRepository
 import com.example.myyandexproject.domain.models.Playlist
 import com.example.myyandexproject.ui.PlaylistsState
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class PlaylistViewModel(
     private val context: Context,
-    private val playlistsRepository: PlaylistsRepository
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private val playListsState = MutableLiveData<PlaylistsState>()
@@ -25,7 +26,7 @@ class PlaylistViewModel(
     fun fetchPlayList(){
 
         viewModelScope.launch(Dispatchers.IO){
-            playlistsRepository
+            playlistInteractor
                 .getPlaylists()
                 .collect { playlists ->
                     Log.i("playlists", playlists.toString())

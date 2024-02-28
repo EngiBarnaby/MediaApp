@@ -115,7 +115,7 @@ class CreatePlaylistFragment : Fragment() {
                     Log.i("myImagePath", imagePath)
                     viewModel.setImageUrl(imagePath)
                 } else {
-                    Toast.makeText(requireContext(), "Изображение не было выбрано", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "${requireContext().getString(R.string.image_was_not_selected)}", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -151,12 +151,12 @@ class CreatePlaylistFragment : Fragment() {
             viewModel.getDescription().value?.isNotEmpty() == true
         ){
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Завершить создание плейлиста?")
-                .setMessage("Все несохраненные данные будут потеряны")
-                .setNeutralButton("Отмена") { dialog, which ->
+                .setTitle(requireContext().getString(R.string.finish_creating_playlist))
+                .setMessage(requireContext().getString(R.string.unsaved_data_will_be_lost))
+                .setNeutralButton(requireContext().getString(R.string.cancel)) { dialog, which ->
                     dialog.cancel()
                 }
-                .setPositiveButton("Завершить") { dialog, which ->
+                .setPositiveButton(requireContext().getString(R.string.finish)) { dialog, which ->
                     findNavController().navigateUp()
                 }
                 .show()

@@ -51,4 +51,12 @@
     <string name="playlist_name">Название*</string>
     <string name="playlist_description">Описание</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="track_already_in_playlist">Трек уже в плейлисте</string>
+    <string name="track_added_to_playlist">Добавлено в плейлист</string>
+    <string name="finish_creating_playlist">Завершить создание плейлиста?</string>
+    <string name="unsaved_data_will_be_lost">Все несохраненные данные будут потеряны</string>
+    <string name="cancel">Отмена</string>
+    <string name="finish">Завершить</string>
+    <string name="image_was_not_selected">Изображение не было выбрано</string>
+    <string name="new_playlist_has_been_created">Новый плейлист был создан</string>
 </resources>
