@@ -149,4 +149,8 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="ForBottomSheetBtn">
+        <item name="android:background">@drawable/bottom_sheet_btn_background_dark</item>
+    </style>
+
 </resources>

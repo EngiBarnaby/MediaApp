@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -123,6 +124,19 @@ class CreatePlaylistFragment : Fragment() {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if(
+                viewModel.getTitle().value?.isNotEmpty() == true ||
+                viewModel.getImageUrl().value?.isNotEmpty() == true ||
+                viewModel.getDescription().value?.isNotEmpty() == true
+            ){
+                showModal()
+            }
+            else{
+                findNavController().navigateUp()
+            }
+        }
+
     }
 
     fun changeCreateBtnState(isEmpty : Boolean){
@@ -144,27 +158,17 @@ class CreatePlaylistFragment : Fragment() {
         }
     }
 
-    private fun showModal() : Boolean {
-        if(
-            viewModel.getTitle().value?.isNotEmpty() == true ||
-            viewModel.getImageUrl().value?.isNotEmpty() == true ||
-            viewModel.getDescription().value?.isNotEmpty() == true
-        ){
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(requireContext().getString(R.string.finish_creating_playlist))
-                .setMessage(requireContext().getString(R.string.unsaved_data_will_be_lost))
-                .setNeutralButton(requireContext().getString(R.string.cancel)) { dialog, which ->
-                    dialog.cancel()
-                }
-                .setPositiveButton(requireContext().getString(R.string.finish)) { dialog, which ->
-                    findNavController().navigateUp()
-                }
-                .show()
-            return true
-        }
-        else{
-            return false
-        }
+    private fun showModal(){
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(requireContext().getString(R.string.finish_creating_playlist))
+            .setMessage(requireContext().getString(R.string.unsaved_data_will_be_lost))
+            .setNeutralButton(requireContext().getString(R.string.cancel)) { dialog, which ->
+                dialog.cancel()
+            }
+            .setPositiveButton(requireContext().getString(R.string.finish)) { dialog, which ->
+                findNavController().navigateUp()
+            }
+            .show()
     }
 
     private fun saveFileToInternalStorage(uri: Uri) : String {

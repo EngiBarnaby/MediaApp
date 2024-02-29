@@ -1,6 +1,7 @@
 package com.example.myyandexproject.ui.player.fragments
 
 import android.content.res.ColorStateList
+import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -43,6 +44,8 @@ class AudioPlayerFragment : Fragment() {
     private lateinit var bottomSheet : ConstraintLayout
     private val playlistAdapter = PlaylistVerticalAdapter()
 
+    private lateinit var bottomSheetCallback: BottomSheetCallback
+
     companion object {
         private const val TRACK_DATA = "track_data"
     }
@@ -64,6 +67,24 @@ class AudioPlayerFragment : Fragment() {
 
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        bottomSheetCallback = object : BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.bottomSheetBackground.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.bottomSheetBackground.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
 
         viewModel.getPlayerState().observe(viewLifecycleOwner){ playerState ->
             when(playerState){
