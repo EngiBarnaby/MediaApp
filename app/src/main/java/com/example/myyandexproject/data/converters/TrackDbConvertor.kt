@@ -14,7 +14,7 @@ class TrackDbConvertor {
             track.artworkUrl100,
             track.collectionName,
             track.releaseDate,
-            track.primaryGenreName,
+            track.primaryGenreName ?: "Нет",
             track.country,
             track.previewUrl
             )

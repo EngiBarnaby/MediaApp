@@ -6,10 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myyandexproject.domain.db.AudioPlayerInteractor
-import com.example.myyandexproject.domain.db.FavoritesRepository
-import com.example.myyandexproject.domain.db.PlaylistTracksRepository
-import com.example.myyandexproject.domain.db.PlaylistsRepository
-import com.example.myyandexproject.domain.impl.PlaylistTrackInteractorImpl
 import com.example.myyandexproject.domain.models.Playlist
 import com.example.myyandexproject.domain.models.PlaylistTrack
 
@@ -69,12 +65,10 @@ class AudioPlayerViewModel(
             artworkUrl100=track.artworkUrl100,
             collectionName=track.collectionName,
             releaseDate=track.releaseDate,
-            primaryGenreName=track.primaryGenreName,
+            primaryGenreName=track.primaryGenreName ?: "Нет",
             country=track.country,
             previewUrl=track.previewUrl
         )
-
-        val testList = playListTracks.value
 
         if (!playListTracks.value?.contains(playlistTrack)!!){
             viewModelScope.launch {
@@ -85,9 +79,8 @@ class AudioPlayerViewModel(
         viewModelScope.launch {
             audioPlayerInteractor.addTrackToPlaylist(playlist.id!!, track.trackId)
         }
-
+        playListsState.value = PlaylistsState.Loading
         fetchPlayList()
-
     }
 
     private fun fetchPlaylistTracks(){

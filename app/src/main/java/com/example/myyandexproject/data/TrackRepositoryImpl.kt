@@ -1,5 +1,6 @@
 package com.example.myyandexproject.data
 
+import android.util.Log
 import com.example.myyandexproject.data.dto.Resource
 import com.example.myyandexproject.data.dto.TrackResponse
 import com.example.myyandexproject.data.dto.TrackSearchByNameRequest
@@ -8,7 +9,6 @@ import com.example.myyandexproject.domain.search.api.TrackRepository
 import com.example.myyandexproject.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class TrackRepositoryImpl(private val networkClient: NetworkClient, private val favoritesRepository: FavoritesRepository) : TrackRepository {
     override fun getSongs(term: String): Flow<Resource<ArrayList<Track>>> = flow {
@@ -28,6 +28,7 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient, private val 
             }
         }
         catch (e : Throwable){
+            Log.e("error", e.toString())
             emit(Resource.Error("Ошибка сервера"))
         }
     }
