@@ -5,11 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myyandexproject.domain.db.FavoritesRepository
+import com.example.myyandexproject.domain.db.AudioPlayerInteractor
+import com.example.myyandexproject.domain.models.Playlist
+import com.example.myyandexproject.domain.models.PlaylistTrack
 
 import com.example.myyandexproject.domain.models.Track
+import com.example.myyandexproject.ui.PlaylistsState
 import com.example.myyandexproject.ui.player.PlayerState
 import com.example.myyandexproject.utils.convertTime
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,7 +21,7 @@ import kotlinx.coroutines.launch
 class AudioPlayerViewModel(
     private var track: Track,
     private val mediaPlayer: MediaPlayer,
-    private val favoritesRepository: FavoritesRepository
+    private val audioPlayerInteractor: AudioPlayerInteractor
 ) : ViewModel() {
 
     private var timerJob: Job? = null
@@ -25,14 +29,20 @@ class AudioPlayerViewModel(
     private var playerState = MutableLiveData(PlayerState.STATE_DEFAULT)
     private var currentTrackTime = MutableLiveData("00:00")
     private val isFavoriteData = MutableLiveData<Boolean>(false)
+    private val playListsState = MutableLiveData<PlaylistsState>()
+    private val playListTracks = MutableLiveData<List<PlaylistTrack>>()
 
     fun getPlayerState() : LiveData<PlayerState> = playerState
     fun getCurrentTrackTime() : LiveData<String> = currentTrackTime
     fun isFavorite() : LiveData<Boolean> = isFavoriteData
 
+    fun getPlayListsState() : LiveData<PlaylistsState> = playListsState
+
     init {
         isFavoriteData.postValue(track.isFavorite)
         preparePlayer()
+        fetchPlayList()
+        fetchPlaylistTracks()
     }
 
     fun changeFavoriteStatus() {
@@ -46,16 +56,55 @@ class AudioPlayerViewModel(
         }
     }
 
+    fun addTrackInPlaylist(track: Track, playlist : Playlist){
+        val playlistTrack = PlaylistTrack(
+            trackId=track.trackId,
+            trackName=track.trackName,
+            artistName=track.artistName,
+            trackTimeMillis=track.trackTimeMillis,
+            artworkUrl100=track.artworkUrl100,
+            collectionName=track.collectionName,
+            releaseDate=track.releaseDate,
+            primaryGenreName=track.primaryGenreName ?: "Нет",
+            country=track.country,
+            previewUrl=track.previewUrl
+        )
+
+        if (!playListTracks.value?.contains(playlistTrack)!!){
+            viewModelScope.launch {
+                audioPlayerInteractor.addTrackToPlaylist(playlistTrack)
+            }
+        }
+
+        viewModelScope.launch {
+            audioPlayerInteractor.addTrackToPlaylist(playlist.id!!, track.trackId)
+            playListsState.value = PlaylistsState.Loading
+            audioPlayerInteractor
+                .getPlaylists()
+                .collect { playlists ->
+                    processResult(playlists)
+                }
+        }
+    }
+
+    private fun fetchPlaylistTracks(){
+        viewModelScope.launch {
+            audioPlayerInteractor.getPlaylistTracks()
+                .collect(){
+                    playListTracks.value = it
+                }
+        }
+    }
 
     private fun addToFavorite(){
         viewModelScope.launch {
-            favoritesRepository.addTrack(track)
+            audioPlayerInteractor.addTrack(track)
         }
     }
 
     private fun removeFromFavorite(){
         viewModelScope.launch {
-            favoritesRepository.removeTrack(track)
+            audioPlayerInteractor.removeTrack(track)
         }
     }
 
@@ -75,6 +124,31 @@ class AudioPlayerViewModel(
         timerJob?.cancel()
         currentTrackTime.value = "00:00"
     }
+
+    fun fetchPlayList(){
+
+        viewModelScope.launch(Dispatchers.IO){
+            audioPlayerInteractor
+                .getPlaylists()
+                .collect { playlists ->
+                    processResult(playlists)
+                }
+        }
+    }
+
+    private fun processResult(playlists : List<Playlist>){
+        if(playlists.isEmpty()){
+            renderState(PlaylistsState.Empty("Вы не создали ни одного плейлиста"))
+        }
+        else{
+            renderState(PlaylistsState.Content(playlists))
+        }
+    }
+
+    private fun renderState(state: PlaylistsState){
+        playListsState.postValue(state)
+    }
+
 
     private fun startChanger(){
         timerJob = viewModelScope.launch {

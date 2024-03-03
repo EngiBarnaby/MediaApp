@@ -11,12 +11,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentSearchBinding
 import com.example.myyandexproject.domain.search.api.TrackState
 import com.example.myyandexproject.domain.models.Track
-import com.example.myyandexproject.ui.player.activity.AudioPlayerActivity
 import com.example.myyandexproject.ui.search.recycleView.TrackAdapter
 import com.example.myyandexproject.ui.search.recycleView.TrackClick
 import com.example.myyandexproject.ui.search.viewModel.SearchViewModel
@@ -199,10 +199,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun startMediaActivity(track : Track){
-            val audioPlayerActivityIntent = Intent(requireContext(), AudioPlayerActivity::class.java)
-            val trackData = Track.createJsonFromTrack(track)
-            audioPlayerActivityIntent.putExtra(TRACK_DATA, trackData)
-            startActivity(audioPlayerActivityIntent)
+        val trackData = Track.createJsonFromTrack(track)
+        val bundle = Bundle()
+        bundle.putString(TRACK_DATA, trackData)
+        val navController = findNavController()
+        navController.navigate(R.id.action_searchFragment_to_audioPlayerFragment, bundle)
     }
 
     private fun makeRequest(){

@@ -1,5 +1,6 @@
 package com.example.myyandexproject.data.network
 
+import android.util.Log
 import com.example.myyandexproject.data.NetworkClient
 import com.example.myyandexproject.data.dto.Response
 import com.example.myyandexproject.data.dto.TrackSearchByNameRequest
@@ -18,6 +19,7 @@ class RetrofitItunesClient(private val itunesService : ItunesApi) : NetworkClien
                         response.apply { resultResponse = 200 }
                     }
                     catch (e : Throwable){
+                        Log.e("error", e.toString())
                         Response().apply { resultResponse = 500 }
                     }
                 }
@@ -27,6 +29,7 @@ class RetrofitItunesClient(private val itunesService : ItunesApi) : NetworkClien
             }
         }
         catch (e : UnknownHostException){
+            Log.e("error", e.toString())
             return  Response().apply { resultResponse = 204 }
         }
     }

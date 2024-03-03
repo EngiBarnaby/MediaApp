@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_centerHorizontal="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/playlist_image"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
+        app:srcCompat="@drawable/add_image"
+        />
+
+    <TextView
+        android:id="@+id/playlistTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="test test test" />
+
+    <TextView
+        android:id="@+id/playlistTracksCount"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="test2 test2 test2" />
+
+</LinearLayout>

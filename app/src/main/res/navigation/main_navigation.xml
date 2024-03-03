@@ -1,26 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
     app:startDestination="@id/mainMediaFragment">
     <fragment
         android:id="@+id/mainMediaFragment"
         android:name="com.example.myyandexproject.ui.media.fragments.MainMediaFragment"
-        android:label="MainMediaFragment" />
+        android:label="MainMediaFragment" >
+        <action
+            android:id="@+id/action_mainMediaFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment" />
+        <argument
+            android:name="ARGS_IS_CREATED"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.myyandexproject.ui.search.fragments.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.myyandexproject.ui.settings.fragments.SettingsFragment"
-        android:label="SettingsFragment" >
-        <action
-            android:id="@+id/action_settingsFragment_to_audioPlayer"
-            app:destination="@id/audioPlayer" />
-    </fragment>
+        android:label="SettingsFragment" />
     <activity
         android:id="@+id/audioPlayer"
         android:name="com.example.myyandexproject.ui.player.activity.AudioPlayerActivity"
         android:label="AudioPlayer" />
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.example.myyandexproject.ui.media.fragments.CreatePlaylistFragment"
+        android:label="CreatePlaylistFragment" />
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="com.example.myyandexproject.ui.test.TestFragment"
+        android:label="TestFragment"
+        tools:layout="@layout/fragment_test"/>
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.example.myyandexproject.ui.media.fragments.PlaylistFragment"
+        android:label="PlaylistFragment" />
+    <fragment
+        android:id="@+id/audioPlayerFragment"
+        android:name="com.example.myyandexproject.ui.player.fragments.AudioPlayerFragment"
+        android:label="AudioPlayerFragment" >
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.myyandexproject.ui.media.fragments.FavoriteFragment"
+        android:label="FavoriteFragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
+    </fragment>
 </navigation>

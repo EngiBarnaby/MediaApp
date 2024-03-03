@@ -36,10 +36,10 @@
     <string name="initial_time">00:00</string>
     <string name="error_extraction_track">Не удалось получить нужный трек.</string>
     <string name="return_to_search">Вернутся к поиску</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="media_library_title">Медиатека</string>
     <string name="media_library_is_empty">Ваша медиатека пуста</string>
+    <string name="playlists_is_empty">"Вы не создали ни одного плейлиста"</string>
     <string name="new_playlist_btn">Новый плейлист</string>
     <string name="no_playlist_yet">Вы не создали ни одного плейлиста</string>
     <string name="table_name_favorite">Избранные треки</string>
@@ -47,4 +47,16 @@
     <string name="menu_search">Поиск</string>
     <string name="menu_media">Медиатека</string>
     <string name="menu_settings">Настройки</string>
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="playlist_name">Название*</string>
+    <string name="playlist_description">Описание</string>
+    <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="track_already_in_playlist">Трек уже в плейлисте</string>
+    <string name="track_added_to_playlist">Добавлено в плейлист</string>
+    <string name="finish_creating_playlist">Завершить создание плейлиста?</string>
+    <string name="unsaved_data_will_be_lost">Все несохраненные данные будут потеряны</string>
+    <string name="cancel">Отмена</string>
+    <string name="finish">Завершить</string>
+    <string name="image_was_not_selected">Изображение не было выбрано</string>
+    <string name="new_playlist_has_been_created">Новый плейлист был создан</string>
 </resources>
