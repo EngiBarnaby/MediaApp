@@ -78,9 +78,13 @@ class AudioPlayerViewModel(
 
         viewModelScope.launch {
             audioPlayerInteractor.addTrackToPlaylist(playlist.id!!, track.trackId)
+            playListsState.value = PlaylistsState.Loading
+            audioPlayerInteractor
+                .getPlaylists()
+                .collect { playlists ->
+                    processResult(playlists)
+                }
         }
-        playListsState.value = PlaylistsState.Loading
-        fetchPlayList()
     }
 
     private fun fetchPlaylistTracks(){
