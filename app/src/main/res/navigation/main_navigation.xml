@@ -15,6 +15,12 @@
             android:name="ARGS_IS_CREATED"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_mainMediaFragment_to_playlistDetailFragment"
+            app:destination="@id/playlistDetailFragment" />
+        <action
+            android:id="@+id/action_mainMediaFragment_to_audioPlayerFragment2"
+            app:destination="@id/audioPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -56,9 +62,20 @@
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.myyandexproject.ui.media.fragments.FavoriteFragment"
-        android:label="FavoriteFragment" >
+        android:label="FavoriteFragment" />
+    <fragment
+        android:id="@+id/playlistDetailFragment"
+        android:name="com.example.myyandexproject.ui.playlist.fragments.PlaylistDetailFragment"
+        android:label="PlaylistDetailFragment" >
         <action
-            android:id="@+id/action_favoriteFragment_to_audioPlayerFragment"
+            android:id="@+id/action_playlistDetailFragment_to_audioPlayerFragment2"
             app:destination="@id/audioPlayerFragment" />
+        <action
+            android:id="@+id/action_playlistDetailFragment_to_editPlaylistFragment"
+            app:destination="@id/editPlaylistFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="com.example.myyandexproject.ui.playlist.fragments.EditPlaylistFragment"
+        android:label="EditPlaylistFragment" />
 </navigation>

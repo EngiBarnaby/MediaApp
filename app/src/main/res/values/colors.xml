@@ -18,4 +18,5 @@
     <color name="active_btn_color">#3772E7</color>
     <color name="disable_btn_color">#AEAFB4</color>
     <color name="YP_black">#1A1B22</color>
+    <color name="background_grey">#E6E8EB</color>
 </resources>

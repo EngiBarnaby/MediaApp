@@ -23,7 +23,7 @@ val repositoryModule = module {
     }
 
     single<PlaylistsRepository> {
-        PlaylistRepositoryImpl(get(), get())
+        PlaylistRepositoryImpl(get(), get(), get())
     }
 
     single<PlaylistTracksRepository> {

@@ -11,8 +11,8 @@ class PlaylistVerticalViewHolder(private val binding: PlaylistVerticalItemBindin
 
     fun bind(playlist: Playlist){
         binding.playlistTitle.text = playlist.title
-        binding.playlistTrackCount.text = "${playlist.tracksCount.toString()} ${if (playlist.tracksCount == 1) "трек" else "треков"}"
-        Log.i("playlist", playlist.imageUrl.toString())
+        val tracksCount = playlist.idList.count()
+        binding.playlistTrackCount.text = "${tracksCount.toString()} ${if (tracksCount == 1) "трек" else "треков"}"
         Glide.with(itemView)
             .load(playlist.imageUrl)
             .placeholder(R.drawable.track_image_placeholder)
