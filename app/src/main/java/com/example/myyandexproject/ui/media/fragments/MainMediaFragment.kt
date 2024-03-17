@@ -18,14 +18,10 @@ class MainMediaFragment : Fragment() {
     private lateinit var tabMediator: TabLayoutMediator
 
     companion object {
-        fun getInstance(isCreated: Boolean? = null): MainMediaFragment {
+        fun getInstance(): MainMediaFragment {
             val fragment = MainMediaFragment()
-            fragment.arguments = createArgs(isCreated)
             return fragment
         }
-        private const val ARGS_IS_CREATED = "created"
-        fun createArgs(isCreated: Boolean?): Bundle =
-            bundleOf(ARGS_IS_CREATED to isCreated)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -38,13 +34,6 @@ class MainMediaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewPager.adapter = MediaLibraryAdapter(childFragmentManager, lifecycle)
-
-        val isPlaylistCreated = requireArguments()?.getBoolean(ARGS_IS_CREATED, false)
-
-        if(isPlaylistCreated){
-            Toast.makeText(requireContext(), "${requireContext().getString(R.string.new_playlist_has_been_created)}", Toast.LENGTH_SHORT).show()
-        }
-
 
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when(position){

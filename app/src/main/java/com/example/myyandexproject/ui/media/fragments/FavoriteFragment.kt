@@ -82,7 +82,7 @@ class FavoriteFragment : Fragment() {
         val trackData = Track.createJsonFromTrack(track)
         val bundle = Bundle()
         bundle.putString(TRACK_DATA, trackData)
-        findNavController().navigate(R.id.action_favoriteFragment_to_audioPlayerFragment, bundle)
+        findNavController().navigate(R.id.action_mainMediaFragment_to_audioPlayerFragment2, bundle)
     }
 
     private fun showLoading(){

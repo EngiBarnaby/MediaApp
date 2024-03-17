@@ -9,4 +9,5 @@ interface PlaylistInteractor {
     suspend fun addPlaylist(playlist: Playlist)
 
     suspend fun addTrackToPlaylist(playlistId: Int, playlistTrackId : Int)
+
 }

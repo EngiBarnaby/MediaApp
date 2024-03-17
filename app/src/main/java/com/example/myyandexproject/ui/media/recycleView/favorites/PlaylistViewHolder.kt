@@ -12,7 +12,8 @@ class PlaylistViewHolder(private val binding : PlaylistItemBinding) :
 
         fun bind(playlist: Playlist){
             binding.playlistTitle.text = playlist.title
-            binding.playlistTracksCount.text = "${playlist.tracksCount.toString()} ${if (playlist.tracksCount == 1) "трек" else "треков"}"
+            val tracksCount = playlist.idList.count()
+            binding.playlistTracksCount.text = "${tracksCount.toString()} ${if (tracksCount == 1) "трек" else "треков"}"
             Log.i("playlist", playlist.imageUrl.toString())
             Glide.with(itemView)
                 .load(playlist.imageUrl)

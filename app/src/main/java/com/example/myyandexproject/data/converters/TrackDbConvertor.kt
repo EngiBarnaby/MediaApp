@@ -13,10 +13,10 @@ class TrackDbConvertor {
             track.trackTimeMillis,
             track.artworkUrl100,
             track.collectionName,
-            track.releaseDate,
+            track.releaseDate ?: "Нет",
             track.primaryGenreName ?: "Нет",
             track.country,
-            track.previewUrl
+            track.previewUrl ?: ""
             )
     }
 
@@ -29,7 +29,7 @@ class TrackDbConvertor {
             track.trackTimeMillis,
             track.artworkUrl100,
             track.collectionName,
-            track.releaseDate,
+            track.releaseDate ?: "Нет",
             track.primaryGenreName,
             track.country,
             track.previewUrl

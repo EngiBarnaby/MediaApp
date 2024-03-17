@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentPlaylistBinding
 import com.example.myyandexproject.domain.models.Playlist
+import com.example.myyandexproject.domain.models.Track
 import com.example.myyandexproject.ui.PlaylistsState
 import com.example.myyandexproject.ui.media.recycleView.favorites.PlaylistAdapter
 import com.example.myyandexproject.ui.media.recycleView.favorites.PlaylistClick
 import com.example.myyandexproject.ui.media.viewModels.PlaylistViewModel
+import com.example.myyandexproject.ui.search.fragments.SearchFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistFragment : Fragment() {
@@ -33,6 +35,7 @@ class PlaylistFragment : Fragment() {
         }
 
         private const val ARGS_IS_CREATED = "created"
+        private const val PLAYLIST_DATA = "playlist_data"
 
         private fun createArgs(isCreated: Boolean?): Bundle =
             bundleOf(ARGS_IS_CREATED to isCreated)
@@ -82,13 +85,21 @@ class PlaylistFragment : Fragment() {
 
         playlistAdapter.setTrackClickListener(object : PlaylistClick {
             override fun onClick(playlist: Playlist) {
-                Log.i("test", "Click to playlist is work")
+                startFragmentDetail(playlist)
             }
         })
 
         binding.playlists.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.playlists.adapter = playlistAdapter
 
+    }
+
+    private fun startFragmentDetail(playlist: Playlist){
+        val playlistData = Playlist.createJsonFromPlaylist(playlist)
+        val bundle = Bundle()
+        bundle.putString(PLAYLIST_DATA, playlistData)
+        val navController = findNavController()
+        navController.navigate(R.id.action_mainMediaFragment_to_playlistDetailFragment, bundle)
     }
 
     private fun showLoading(){

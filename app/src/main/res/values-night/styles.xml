@@ -153,4 +153,9 @@
         <item name="android:background">@drawable/bottom_sheet_btn_background_dark</item>
     </style>
 
+    <style name="EditTextMenu">
+        <item name="android:textSize">@dimen/setting_option_size</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

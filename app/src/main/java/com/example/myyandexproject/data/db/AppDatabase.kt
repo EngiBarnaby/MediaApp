@@ -11,7 +11,7 @@ import com.example.myyandexproject.data.db.entity.PlaylistEntity
 import com.example.myyandexproject.data.db.entity.PlaylistTrackEntity
 import com.example.myyandexproject.data.db.entity.TrackEntity
 
-@Database(version = 9, entities = [TrackEntity::class, PlaylistEntity::class, PlaylistTrackEntity::class])
+@Database(version = 12, entities = [TrackEntity::class, PlaylistEntity::class, PlaylistTrackEntity::class])
 @TypeConverters(IdListConverter::class)
 abstract class AppDatabase : RoomDatabase(){
 

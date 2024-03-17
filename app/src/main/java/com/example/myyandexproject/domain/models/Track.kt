@@ -9,10 +9,10 @@ data class Track(
     val trackTimeMillis : String,
     val artworkUrl100 : String,
     val collectionName : String?,
-    val releaseDate : String,
+    val releaseDate : String? = "Нет",
     val primaryGenreName : String?,
     val country : String,
-    val previewUrl : String,
+    val previewUrl : String?,
     val isFavorite : Boolean = false
 ){
     companion object {
