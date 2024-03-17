@@ -21,7 +21,7 @@ interface PlaylistTrackDao {
     @Query("SELECT * FROM playlist_track_table ORDER BY timestamp_added DESC")
     suspend fun getPlaylistTracks() : List<PlaylistTrackEntity>
 
-    @Query("SELECT * FROM playlist_track_table WHERE id IN (:trackIds)")
+    @Query("SELECT * FROM playlist_track_table WHERE id IN (:trackIds) ORDER BY timestamp_added DESC")
     suspend fun getTracksByIds(trackIds : List<Int>) : List<PlaylistTrackEntity>
 
     @Query("SELECT * FROM playlist_track_table")

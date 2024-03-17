@@ -64,10 +64,10 @@ class AudioPlayerViewModel(
             trackTimeMillis=track.trackTimeMillis,
             artworkUrl100=track.artworkUrl100,
             collectionName=track.collectionName,
-            releaseDate=track.releaseDate,
+            releaseDate=track.releaseDate ?: "Нет",
             primaryGenreName=track.primaryGenreName ?: "Нет",
             country=track.country,
-            previewUrl=track.previewUrl
+            previewUrl=track.previewUrl ?: ""
         )
 
         if (!playListTracks.value?.contains(playlistTrack)!!){

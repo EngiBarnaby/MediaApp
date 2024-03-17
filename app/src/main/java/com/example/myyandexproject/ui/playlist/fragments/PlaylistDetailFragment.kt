@@ -1,12 +1,15 @@
 package com.example.myyandexproject.ui.playlist.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -14,6 +17,7 @@ import com.example.myyandexproject.R
 import com.example.myyandexproject.databinding.FragmentPlaylistDetailBinding
 import com.example.myyandexproject.domain.models.Playlist
 import com.example.myyandexproject.domain.models.PlaylistTrack
+import com.example.myyandexproject.ui.media.fragments.MainMediaFragment
 import com.example.myyandexproject.ui.playlist.recycleView.PlaylistTrackAdapter
 import com.example.myyandexproject.ui.playlist.recycleView.PlaylistTrackClick
 import com.example.myyandexproject.ui.playlist.recycleView.PlaylistTrackLongClick
@@ -182,7 +186,7 @@ class PlaylistDetailFragment : Fragment() {
     }
 
     private fun showDeletePlaylistModal(){
-        MaterialAlertDialogBuilder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext())
             .setMessage("Хотите удалить плейлист ${playlist.title}?")
             .setNegativeButton("Нет"){ dialog, which ->
                 dialog.cancel()
@@ -191,21 +195,37 @@ class PlaylistDetailFragment : Fragment() {
                 viewModel.deletePlaylist()
                 findNavController().navigateUp()
             }
-            .show()
+            .create()
+        dialog.setOnShowListener {
+            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+
+            negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.main_blue))
+            positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.main_blue))
+        }
+        dialog.show()
     }
 
     private fun showModal(playlistTrack: PlaylistTrack){
-        MaterialAlertDialogBuilder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext())
             .setTitle("Удалить трек")
-            .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
-            .setNeutralButton("Отмена") { dialog, which ->
+            .setMessage("Вы уверены, что хотите удалить трек?")
+            .setNegativeButton("Отмена") { dialog, which ->
                 dialog.cancel()
             }
             .setPositiveButton("Удалить") { dialog, which ->
                 viewModel.removeTrackFromPlaylist(track = playlistTrack)
                 dialog.cancel()
             }
-            .show()
+            .create()
+        dialog.setOnShowListener {
+            val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+
+            negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.main_blue))
+            positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.main_blue))
+        }
+        dialog.show()
     }
 
     private fun setBottomSheetMenu(){

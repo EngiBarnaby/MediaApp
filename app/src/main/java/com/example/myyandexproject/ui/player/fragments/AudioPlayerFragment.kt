@@ -190,7 +190,7 @@ class AudioPlayerFragment : Fragment() {
         binding.bandTitle.text = track.artistName
         binding.currentDuration.text = getString(R.string.initial_time)
         binding.albumValue.text = track?.collectionName
-        binding.yearValue.text = getYearFromReleaseDate(track.releaseDate)
+        binding.yearValue.text = getYearFromReleaseDate(track.releaseDate ?: "Нет")
         binding.genreValue.text = track.primaryGenreName
         binding.country.text = track.country
 

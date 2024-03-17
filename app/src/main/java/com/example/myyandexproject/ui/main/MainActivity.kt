@@ -22,10 +22,13 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.audioPlayer -> {
+                R.id.audioPlayerFragment -> {
                     bottomNavigationView.visibility = View.GONE
                 }
                 R.id.createPlaylistFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
+                R.id.playlistDetailFragment -> {
                     bottomNavigationView.visibility = View.GONE
                 }
                 else -> {

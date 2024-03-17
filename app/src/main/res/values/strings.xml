@@ -22,7 +22,7 @@
     <string name="test_text">Текстовый текст</string>
     <string name="tracks_not_found">Ничего не нашлось</string>
     <string name="connection_problem">Проблемы со связью</string>
-    <string name="check_connection">Зашрузка не удалась. Проверти подключение к интернету</string>
+    <string name="check_connection">Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="refresh_btn">Обновить</string>
     <string name="looking_for">Вы искали</string>
     <string name="clear_history">Очистить историю</string>
@@ -43,7 +43,7 @@
     <string name="new_playlist_btn">Новый плейлист</string>
     <string name="no_playlist_yet">Вы не создали ни одного плейлиста</string>
     <string name="table_name_favorite">Избранные треки</string>
-    <string name="table_name_playlist">Плейлист</string>
+    <string name="table_name_playlist">Плейлисты</string>
     <string name="menu_search">Поиск</string>
     <string name="menu_media">Медиатека</string>
     <string name="menu_settings">Настройки</string>
